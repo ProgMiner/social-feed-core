@@ -13,5 +13,10 @@
     "require": {},
     "config": {
         "optimize-autoloader": true
+    },
+    "autoload": {
+        "psr-4": {
+            "SocialFeedCore\\": "src"
+        }
     }
 }
