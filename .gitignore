@@ -1,0 +1,6 @@
+composer.phar
+/vendor/
+
+/nbproject/
+/social-feed-core.sublime-project
+/social-feed-core.sublime-workspace

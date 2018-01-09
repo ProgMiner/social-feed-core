@@ -1,0 +1,17 @@
+{
+    "name": "progminer/social-feed-core",
+    "description": "Core of SocialFeedEngine",
+    "type": "library",
+    "authors": [
+        {
+            "name": "ProgMiner",
+            "email": "eridan200@mail.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {},
+    "config": {
+        "optimize-autoloader": true
+    }
+}
