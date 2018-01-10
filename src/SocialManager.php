@@ -12,7 +12,7 @@ namespace SocialFeedCore;
  * Social sources manager
  * @author ProgMiner
  */
-class SocialManager {
+class SocialManager implements \ArrayAccess {
 
     /**
      * Socials array
@@ -88,6 +88,22 @@ class SocialManager {
      */
     public static function getSocialsList(): array {
         return static::$socials;
+    }
+
+    public function offsetExists($offset): bool {
+
+    }
+
+    public function offsetGet($offset) {
+
+    }
+
+    public function offsetSet($offset, $value): void {
+
+    }
+
+    public function offsetUnset($offset): void {
+
     }
 
 }

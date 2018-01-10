@@ -14,7 +14,7 @@ use SocialFeedCore\Utils\Post;
  * Abstract social source
  * @author ProgMiner
  */
-abstract class SocialSource extends \ArrayAccess {
+abstract class SocialSource implements \ArrayAccess {
 
     /**
      * Returns name of social
