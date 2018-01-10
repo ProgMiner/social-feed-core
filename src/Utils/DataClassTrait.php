@@ -6,7 +6,7 @@
  * Copyright (c) 2017 Eridan Domoratskiy
  */
 
-namespace SocialFeedCore;
+namespace SocialFeedCore\Utils;
 
 /**
  * Trait for data-classes (structures)

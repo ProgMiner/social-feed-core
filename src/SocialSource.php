@@ -8,11 +8,19 @@
 
 namespace SocialFeedCore;
 
+use SocialFeedCore\Utils\Post;
+
 /**
  * Abstract social source
  * @author ProgMiner
  */
-interface SocialSource extends \ArrayAccess {
+abstract class SocialSource extends \ArrayAccess {
+
+    /**
+     * Returns name of social
+     * @return string
+     */
+    public abstract static function getSocialName(): string;
 
     /**
      * Returns post by id
@@ -41,4 +49,17 @@ interface SocialSource extends \ArrayAccess {
      * @return array Array of Posts
      */
     public abstract function getLastPosts(int $count): array;
+
+    public final static function isSocialSource(string $className): bool {
+        if (!class_exists($className, true)) {
+            return false;
+        }
+
+        if (!is_subclass_of($className, self::class, true)) {
+            return false;
+        }
+
+        return true;
+    }
+
 }
