@@ -37,7 +37,7 @@ abstract class SocialSource implements \ArrayAccess {
     public abstract function getPosts(array $options = []): array;
 
     /**
-     * Returns new posts after time
+     * Returns new posts since $after
      * @param DateTime $after Time
      * @return array Array of Posts
      */

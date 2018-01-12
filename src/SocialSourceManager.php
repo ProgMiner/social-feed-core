@@ -26,6 +26,60 @@ class SocialSourceManager implements \ArrayAccess {
      */
     protected $ids = [];
 
+    public function getId(string $alias): int {
+        if (!isset($this->ids[$offset])) {
+            throw new \OutOfBoundsException("Social source with text id {$offset} isn't exists");
+        }
+
+        return $this->ids[$alias];
+    }
+
+    /**
+     * Returns new posts since $after
+     * @param DateTime $after Time
+     * @return array Array of Posts
+     */
+    public function getNewPosts(\DateTime $after): array {
+        $ret = [];
+
+        foreach ($this->sources as $source) {
+            $posts = $source->getNewPosts($after);
+            $dates = [];
+
+            foreach ($posts as $post) {
+                $dates[] = $post->date->getTimestamp();
+            }
+
+            array_multisort($posts, SORT_DESC, SORT_NUMERIC, $dates);
+            $ret = array_merge($posts, $ret);
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Returns last posts
+     * @param int $count Count (0 for all)
+     * @return array Array of Posts
+     */
+    public function getLastPosts(int $count): array {
+        $ret = [];
+
+        foreach ($this->sources as $source) {
+            $posts = $source->getLastPosts($count);
+            $dates = [];
+
+            foreach ($posts as $post) {
+                $dates[] = $post->date->getTimestamp();
+            }
+
+            array_multisort($posts, SORT_DESC, SORT_NUMERIC, $dates);
+            $ret = array_merge($posts, $ret);
+        }
+
+        return $ret;
+    }
+
     /**
      * Checks if a social source is exists
      * @param int|string $offset Social source id or text id
