@@ -6,7 +6,9 @@
  * Copyright (c) 2018 Eridan Domoratskiy
  */
 
-namespace SocialFeedCore;
+namespace SocialFeedCore\Utils;
+
+use SocialFeedCore\SocialSource;
 
 /**
  * Manager of social networks (SocialSource classes)
@@ -18,13 +20,41 @@ class SocialManager implements \ArrayAccess {
      * Array of social networks
      * @var array
      */
-    private $socials = [];
+    protected $socials = [];
+
+    /**
+     * Imports social networks from array
+     * @param array $socials Array of social networks to importing
+     * @return void
+     */
+    public function import(array $socials) {
+        foreach ($socials as $socialName => $social) {
+            if (!is_string($socialName)) {
+                $this->offsetSet(null, $social);
+            } else {
+                $this->offsetSet($socialName, $social);
+            }
+        }
+    }
+
+    /**
+     * Merges social networks from array without checks
+     *
+     * !!!IMPORTANT!!! Use this only for optimizing import from SocialManager::export()
+     * @param array $socials Array of social
+     * @return void
+     *
+     * @see SocialManager::export()
+     */
+    public function importForce(array $socials) {
+        $this->socials = array_merge($this->socials, $socials);
+    }
 
     /**
      * Returns a list of all registered social networks
      * @return array List of social networks
      */
-    public function asArray(): array {
+    public function export(): array {
         return $this->socials;
     }
 
