@@ -21,10 +21,34 @@ trait SocialSourceTrait {
     public static $global = [];
 
     /**
+     * Is social initialized
+     * @var bool
+     */
+    private static $_init = false;
+
+    /**
      * Local source's settings
      * @var type
      */
     protected $settings = [];
+
+    private abstract static function _init();
+
+    /**
+     * Initializes a social
+     * @param array $initOptions Init global options
+     * @return void
+     */
+    public static function init(array $initOptions = []) {
+        if (static::$_init !== false) {
+            return;
+        }
+
+        static::$_init = true;
+
+        static::_init();
+        static::$global = array_merge(static::$global, $initOptions);
+    }
 
     /**
      * @param mixed $offset Setting name

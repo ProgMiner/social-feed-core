@@ -1,0 +1,169 @@
+<?php
+
+/*
+ * This file is part of SocialFeedCore
+ *
+ * Copyright (c) 2018 Eridan Domoratskiy
+ */
+
+namespace SocialFeedCore\SocialSources;
+
+use SocialFeedCore\SocialSource;
+use SocialFeedCore\SocialSourceTrait;
+use SocialFeedCore\Utils\Post;
+use SocialFeedCore\SocialSources\Exceptions\VKSocialSourceException;
+
+/**
+ * SocialSource implementation for VK social network
+ *
+ * Requires global "access_token" setting
+ * for VK API access token and
+ * id of source (profile, group)
+ * @author ProgMiner
+ */
+class VKSocialSource extends SocialSource {
+
+    use SocialSourceTrait;
+
+    /**
+     * Requests VK API method
+     * @param string $method API method name
+     * @param array $params Request parameters
+     * @param type $accessToken Access token for request
+     * @param bool $checkError If true check if result contains error and throw exception
+     * @return mixed Response object if $checkError = true, full result object otherwise
+     * @throws VKSocialSourceException
+     */
+    public static function api(string $method, array $params = [],
+                               $accessToken = null, bool $checkError = true) {
+        if (is_null($accessToken)) {
+            $accessToken = static::$global['access_token'];
+        }
+
+        $request_params = array_merge(static::$global['default_api_params'],
+                                      ['access_token' => $accessToken], $params);
+
+        $get_params = http_build_query($request_params);
+        $result = json_decode(file_get_contents("https://api.vk.com/method/{$method}?" . $get_params));
+
+        if (!$checkError) {
+            return $result;
+        }
+
+        if (!isset($result->error)) {
+            return $result->response;
+        }
+
+        throw new VKSocialSourceException($result->error);
+    }
+
+    /**
+     * Returns id by screen name
+     * @param string $screenName Screen name
+     * @return array Array with id and object type
+     */
+    public static function getIdByScreenName(string $screenName): array {
+        $response = static::api('utils.resolveScreenName',
+                                ['screen_name' => $screenName]);
+
+        if ($response->type === 'group') {
+            $response->object_id *= -1;
+        }
+
+        return [
+            $response->object_id,
+            $response->type
+        ];
+    }
+
+    private static function makePost($post): Post {
+        $post = (array) $post;
+
+        $post['content'] = $post['text'];
+        unset($post['text']);
+
+        return new Post($post);
+    }
+
+    public static function getSocialName(): string {
+        return "VK.com";
+    }
+
+    private static function _init() {
+        static::$global['default_api_params'] = [
+            'v' => '5.69'
+        ];
+    }
+
+    /**
+     * @param int|string $id Id of source
+     * @return void
+     * @throws \InvalidArgumentException
+     */
+    public function __construct($id) {
+        if (is_string($id)) {
+            $id = static::resolveScreenName($id)[1];
+        }
+
+        if (is_int($id)) {
+            $this['id'] = $id;
+            return;
+        }
+
+        throw new \InvalidArgumentException("Id must be a string or an integer");
+    }
+
+    public function getPost(int $id): Post {
+        $result = static::api('wall.getById',
+                              ['posts' => "{$this['id']}_{$id}"],
+                              $this['access_token'])[0];
+
+        return static::makePost($result);
+    }
+
+    public function getPosts(array $options = []): array {
+        $options['owner_id'] = $this['id'];
+
+        $result = static::api('wall.get', $options, $this['access_token'])->items;
+
+        $posts = [];
+        foreach ($result as $post) {
+            $posts[] = static::makePost($post);
+        }
+
+        return Post::sortPostsByDate($posts);
+    }
+
+    public function getLastPosts(int $count, $options = []): array {
+        if ($count > 100) {
+            $count = 100;
+        }
+
+        $options['count'] = $count;
+
+        return $this->getPosts($options);
+    }
+
+    public function getNewPosts(\DateTime $after, $options = []): array {
+        $posts = [];
+        $_postsTmp = [];
+
+        for ($offset = 0; $posts[count($posts) - 1]->date > $after;
+                    $offset += count($_postsTmp)) {
+            $options['offset'] = $offset;
+            $_postsTmp = $this->getPosts($options);
+            $posts = array_merge($posts, $_postsTmp);
+        }
+
+        for ($i = count($posts) - 1; count($posts) > 0; --$i) {
+            if ($posts[$i]->date < $after) {
+                unset($posts[$i]);
+            } else {
+                break;
+            }
+        }
+
+        return Post::sortPostsByDate(array_values($posts));
+    }
+
+}

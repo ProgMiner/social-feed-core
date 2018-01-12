@@ -41,14 +41,14 @@ abstract class SocialSource implements \ArrayAccess {
      * @param DateTime $after Time
      * @return array Array of Posts
      */
-    public abstract function getNewPosts(\DateTime $after): array;
+    public abstract function getNewPosts(\DateTime $after, array $options = []): array;
 
     /**
      * Returns last posts
      * @param int $count Count (0 for all)
      * @return array Array of Posts
      */
-    public abstract function getLastPosts(int $count): array;
+    public abstract function getLastPosts(int $count, array $options = []): array;
 
     /**
      * Checks class is it a subclass of SocialSource

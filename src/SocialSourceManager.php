@@ -8,6 +8,8 @@
 
 namespace SocialFeedCore;
 
+use SocialFeedCore\Utils\Post;
+
 /**
  * Manager of social sources
  * @author ProgMiner
@@ -26,6 +28,12 @@ class SocialSourceManager implements \ArrayAccess {
      */
     protected $ids = [];
 
+    /**
+     * Return social source id by text id if exists
+     * @param string $alias Social source text id
+     * @return int Social source id
+     * @throws \OutOfBoundsException
+     */
     public function getId(string $alias): int {
         if (!isset($this->ids[$offset])) {
             throw new \OutOfBoundsException("Social source with text id {$offset} isn't exists");
@@ -43,18 +51,10 @@ class SocialSourceManager implements \ArrayAccess {
         $ret = [];
 
         foreach ($this->sources as $source) {
-            $posts = $source->getNewPosts($after);
-            $dates = [];
-
-            foreach ($posts as $post) {
-                $dates[] = $post->date->getTimestamp();
-            }
-
-            array_multisort($posts, SORT_DESC, SORT_NUMERIC, $dates);
-            $ret = array_merge($posts, $ret);
+            $ret = array_merge($ret, $source->getNewPosts($after));
         }
 
-        return $ret;
+        return Post::sortPostsByDate($ret);
     }
 
     /**
@@ -66,18 +66,10 @@ class SocialSourceManager implements \ArrayAccess {
         $ret = [];
 
         foreach ($this->sources as $source) {
-            $posts = $source->getLastPosts($count);
-            $dates = [];
-
-            foreach ($posts as $post) {
-                $dates[] = $post->date->getTimestamp();
-            }
-
-            array_multisort($posts, SORT_DESC, SORT_NUMERIC, $dates);
-            $ret = array_merge($posts, $ret);
+            $ret = array_merge($ret, $source->getLastPosts($count));
         }
 
-        return $ret;
+        return Post::sortPostsByDate($ret);
     }
 
     /**

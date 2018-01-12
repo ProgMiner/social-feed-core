@@ -30,9 +30,9 @@ class SocialManager implements \ArrayAccess {
     public function import(array $socials) {
         foreach ($socials as $socialName => $social) {
             if (!is_string($socialName)) {
-                $this->offsetSet(null, $social);
+                $this[] = $social;
             } else {
-                $this->offsetSet($socialName, $social);
+                $this[$socialName] = $social;
             }
         }
     }

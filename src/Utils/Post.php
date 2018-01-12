@@ -16,6 +16,26 @@ class Post {
 
     use DataClassTrait;
 
+    /**
+     * Sorts array of Posts by date
+     * @param array $posts Array of Posts
+     * @return array Sorted array
+     * @throws \RuntimeException
+     */
+    public static function sortPostsByDate(array $posts, $sortOrder = SORT_DESC): array {
+        $dates = [];
+
+        foreach ($posts as $post) {
+            $dates[] = $post->date->getTimestamp();
+        }
+
+        if (array_multisort($posts, $sortOrder, SORT_NUMERIC, $dates) === false) {
+            throw new \RuntimeException('An error occured in "array_multisort"');
+        }
+
+        return $posts;
+    }
+
     private function requirements() {
         return [
             'id' => function($id) {
