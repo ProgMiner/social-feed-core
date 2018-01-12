@@ -3,107 +3,110 @@
 /*
  * This file is part of SocialFeedCore.
  *
- * Copyright (c) 2017 Eridan Domoratskiy
+ * Copyright (c) 2018 Eridan Domoratskiy
  */
 
 namespace SocialFeedCore;
 
 /**
- * Social sources manager
+ * Manager of social networks (SocialSource classes)
  * @author ProgMiner
  */
 class SocialManager implements \ArrayAccess {
 
     /**
-     * Socials array
+     * Array of social networks
      * @var array
      */
-    private static $socials = [];
+    private $socials = [];
 
     /**
-     * Social sources array
-     * @var array
+     * Returns a list of all registered social networks
+     * @return array List of social networks
      */
-    private $socialSources = [];
-
-    /**
-     * Registers a NEW social source class
-     *
-     * If a class or id (with $rewrite = false)
-     * already registered throws OutOfRangeException
-     * @param string $className Social source class name
-     * @param string $id Optional id for social source class
-     * @param bool $rewrite If true social source class will be replaced
-     * @return void
-     * @throws \UnexpectedValueException
-     * @throws \OutOfRangeException
-     */
-    public static function registerSocial(string $className, $id = null,
-                                          bool $rewrite = false) {
-        if (!SocialSource::isSocialSource($className)) {
-            throw new \UnexpectedValueException("Class \"{$className}\" isn't a SocialSource");
-        }
-
-        if (in_array($className, static::$socials, true)) {
-            throw new \OutOfRangeException("Social source class\"{$className}\" already registered");
-        }
-
-        if (!is_null($id)) {
-            $id = $className::getSocialName();
-        }
-
-        if (!$rewrite && isset(static::$socials[$id])) {
-            throw new \OutOfRangeException("Social \"{$id}\" already registered");
-        }
-
-        static::$socials[$id] = $className;
+    public function asArray(): array {
+        return $this->socials;
     }
 
     /**
-     * Unregisters a social source class
-     * @param string $id Id or social source class name
-     * @return void
-     * @throws \UnexpectedValueException
+     * Checks if a social network is registered
+     * @param string $offset Social network name or class name
+     * @return bool True if the social network is registered, false otherwise
      */
-    public static function unregisterSocial(string $id) {
-        if (isset(static::$socials[$id])) {
-            unset(static::$socials[$id]);
+    public function offsetExists($offset): bool {
+        if (isset($this->socials[$offset])) {
+            return true;
+        }
+
+        return in_array($offset, $this->socials, true);
+    }
+
+    /**
+     * Returns a social network class name by name or class name
+     * @param string $offset A social network name or class name
+     * @return string A social network class name
+     */
+    public function offsetGet($offset) {
+        if (isset($this->socials[$offset])) {
+            return $this->socials[$offset];
+        }
+
+        if (in_array($offset, $this->socials, true)) {
+            return $offset;
+        }
+
+        throw new \OutOfBoundsException("Social network \"{$offset}\" isn't registered");
+    }
+
+    /**
+     * Registers a social network
+     * @param string $offset Social network name, gets from $value::getSocialName() if empty
+     * @param string $value Social network class name
+     * @return void
+     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
+     *
+     * @see SocialSource::getSocialName()
+     */
+    public function offsetSet($offset, $value) {
+        if (!is_string($offset) && !is_null($offset)) {
+            throw new \InvalidArgumentException('Social network\'s name must be a string');
+        }
+
+        if (!is_string($value)) {
+            throw new \InvalidArgumentException('Social network\'s class name must be a string');
+        }
+
+        if (!SocialSource::isSocialSource($value)) {
+            throw new \UnexpectedValueException("Class \"{$value}\" isn't a SocialSource");
+        }
+
+        if (is_null($offset)) {
+            $offset = $value::getSocialName();
+        }
+
+        $this->socials[$offset] = $value;
+    }
+
+    /**
+     * Unregisters a social network
+     * @param string $offset Social network name
+     * @return void
+     * @throws \OutOfBoundsException
+     */
+    public function offsetUnset($offset) {
+        if (isset($this->socials[$offset])) {
+            unset($this->socials[$offset]);
             return;
         }
 
-        if (!SocialSource::isSocialSource($id)) {
-            throw new \UnexpectedValueException("Social \"{$id}\" isn't registered");
+        $key = array_search($offset, $this->socials, true);
+
+        if ($key === false) {
+            throw new \OutOfBoundsException("Social network \"{$offset}\" isn't registered");
         }
 
-        $key = array_search($id, static::$socials, true);
-
-        if ($key !== false) {
-            unset(static::$socials[$key]);
-        }
-    }
-
-    /**
-     * Returns list of all registered social source classes
-     * @return array Social source classes list
-     */
-    public static function getSocialsList(): array {
-        return static::$socials;
-    }
-
-    public function offsetExists($offset): bool {
-
-    }
-
-    public function offsetGet($offset) {
-
-    }
-
-    public function offsetSet($offset, $value): void {
-
-    }
-
-    public function offsetUnset($offset): void {
-
+        unset($this->socials[$key]);
     }
 
 }
