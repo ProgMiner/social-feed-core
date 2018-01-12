@@ -29,7 +29,7 @@ class Post {
             $dates[] = $post->date->getTimestamp();
         }
 
-        if (array_multisort($posts, $sortOrder, SORT_NUMERIC, $dates) === false) {
+        if (array_multisort($posts, $sortOrder, SORT_REGULAR, $dates) === false) {
             throw new \RuntimeException('An error occured in "array_multisort"');
         }
 
@@ -39,7 +39,7 @@ class Post {
     private function requirements() {
         return [
             'id' => function($id) {
-                if (!is_int($id) || $id > 0) {
+                if (!is_int($id) || $id < 0) {
                     throw new \UnexpectedValueException('Id must be positive integer');
                 }
                 return $id;
@@ -70,9 +70,10 @@ class Post {
 
     private function defaults() {
         return [
-            'views'   => 0,
-            'likes'   => 0,
-            'reposts' => 0
+            'views'    => 0,
+            'likes'    => 0,
+            'reposts'  => 0,
+            'comments' => 0
         ];
     }
 

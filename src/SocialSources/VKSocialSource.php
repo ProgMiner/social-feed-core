@@ -44,6 +44,7 @@ class VKSocialSource extends SocialSource {
                                       ['access_token' => $accessToken], $params);
 
         $get_params = http_build_query($request_params);
+
         $result = json_decode(file_get_contents("https://api.vk.com/method/{$method}?" . $get_params));
 
         if (!$checkError) {
@@ -82,6 +83,14 @@ class VKSocialSource extends SocialSource {
         $post['content'] = $post['text'];
         unset($post['text']);
 
+        $post['likes'] = $post['likes']->count;
+        $post['reposts'] = $post['reposts']->count;
+        $post['comments'] = $post['comments']->count;
+
+        if (isset($post['views'])) {
+            $post['views'] = $post['views']->count;
+        }
+
         return new Post($post);
     }
 
@@ -102,7 +111,7 @@ class VKSocialSource extends SocialSource {
      */
     public function __construct($id) {
         if (is_string($id)) {
-            $id = static::resolveScreenName($id)[1];
+            $id = static::getIdByScreenName($id)[0];
         }
 
         if (is_int($id)) {
@@ -116,7 +125,7 @@ class VKSocialSource extends SocialSource {
     public function getPost(int $id): Post {
         $result = static::api('wall.getById',
                               ['posts' => "{$this['id']}_{$id}"],
-                              $this['access_token'])[0];
+                              $this['access_token']);
 
         return static::makePost($result);
     }
@@ -134,7 +143,7 @@ class VKSocialSource extends SocialSource {
         return Post::sortPostsByDate($posts);
     }
 
-    public function getLastPosts(int $count, $options = []): array {
+    public function getLastPosts(int $count, array $options = []): array {
         if ($count > 100) {
             $count = 100;
         }
@@ -144,7 +153,7 @@ class VKSocialSource extends SocialSource {
         return $this->getPosts($options);
     }
 
-    public function getNewPosts(\DateTime $after, $options = []): array {
+    public function getNewPosts(\DateTime $after, array $options = []): array {
         $posts = [];
         $_postsTmp = [];
 

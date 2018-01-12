@@ -4,3 +4,5 @@ composer.phar
 /nbproject/
 /social-feed-core.sublime-project
 /social-feed-core.sublime-workspace
+
+/tests/

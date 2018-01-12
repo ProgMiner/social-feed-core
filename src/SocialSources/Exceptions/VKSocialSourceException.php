@@ -23,7 +23,7 @@ class VKSocialSourceException extends \Exception {
 
     public function __construct($vkError, \Throwable $previous = null) {
         parent::__construct($vkError->error_msg, $vkError->error_code, $previous);
-        _construct([
+        $this->_construct([
             'requestParams' => $vkError->request_params
         ]);
     }

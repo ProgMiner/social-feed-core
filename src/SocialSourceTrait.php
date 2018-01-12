@@ -32,7 +32,7 @@ trait SocialSourceTrait {
      */
     protected $settings = [];
 
-    private abstract static function _init();
+    protected abstract static function _init();
 
     /**
      * Initializes a social

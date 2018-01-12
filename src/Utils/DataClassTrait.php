@@ -29,20 +29,22 @@ trait DataClassTrait {
     private $data;
 
     /**
-     * Returns array with required data-class fields with validators (or without)
-     * @return array Array with required data-class fields with validators (or without)
-     */
-    private abstract function requirements(): array;
-
-    /**
      * Returns data-class config from
      * requirements() and defaults()
      * @return array Requirements and defaults
      * @throws LogicException
      */
     private function getDataClassConfiguration(): array {
-        $requirements = $this->requirements();
+        $requirements = null;
         $defaults = null;
+
+        if (method_exists($this, 'requirements')) {
+            $requirements = $this->requirements();
+        }
+
+        if (!is_array($requirements)) {
+            throw new \LogicException('Data class requirements are not defined');
+        }
 
         if (method_exists($this, 'defaults')) {
             $defaults = $this->defaults();
@@ -56,6 +58,14 @@ trait DataClassTrait {
 
         if (is_array($defaults)) {
             $this->data = $defaults;
+        }
+
+        foreach ($data as $field => $value) {
+            if (!is_string($field)) {
+                continue;
+            }
+
+            $this->data[$field] = $value;
         }
 
         foreach ($requirements as $field => $validator) {
