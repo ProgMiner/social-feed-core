@@ -3,106 +3,110 @@
 /*
  * This file is part of SocialFeedCore.
  *
- * Copyright (c) 2017 Eridan Domoratskiy
+ * Copyright (c) 2018 Eridan Domoratskiy
  */
 
 namespace SocialFeedCore;
 
 /**
- * Socials (SocialSource classes) manager
+ * Manager of social networks (SocialSource classes)
  * @author ProgMiner
  */
 class SocialManager implements \ArrayAccess {
 
     /**
-     * Socials array
+     * Array of social networks
      * @var array
      */
     private $socials = [];
 
     /**
-     * Unregisters a social source class
-     * @param string $id Id or social source class name
-     * @return void
-     * @throws \UnexpectedValueException
+     * Returns a list of all registered social networks
+     * @return array List of social networks
      */
-    public static function unregisterSocial(string $id) {
-        if (isset(static::$socials[$id])) {
-            unset(static::$socials[$id]);
-            return;
-        }
-
-        if (!SocialSource::isSocialSource($id)) {
-            throw new \UnexpectedValueException("Social \"{$id}\" isn't registered");
-        }
-
-        $key = array_search($id, static::$socials, true);
-
-        if ($key !== false) {
-            unset(static::$socials[$key]);
-        }
+    public function asArray(): array {
+        return $this->socials;
     }
 
     /**
-     * Returns list of all registered social source classes
-     * @return array Social source classes list
+     * Checks if a social network is registered
+     * @param string $offset Social network name or class name
+     * @return bool True if the social network is registered, false otherwise
      */
-    public static function getSocialsList(): array {
-        return static::$socials;
-    }
-
     public function offsetExists($offset): bool {
+        if (isset($this->socials[$offset])) {
+            return true;
+        }
 
-    }
-
-    public function offsetGet($offset) {
-
+        return in_array($offset, $this->socials, true);
     }
 
     /**
-     * Registers a social
-     * @param string $offset Social's name, gets from {@see SocialSource::getSocialName()} if empty
-     * @param string $value Social's class name
+     * Returns a social network class name by name or class name
+     * @param string $offset A social network name or class name
+     * @return string A social network class name
+     */
+    public function offsetGet($offset) {
+        if (isset($this->socials[$offset])) {
+            return $this->socials[$offset];
+        }
+
+        if (in_array($offset, $this->socials, true)) {
+            return $offset;
+        }
+
+        throw new \OutOfBoundsException("Social network \"{$offset}\" isn't registered");
+    }
+
+    /**
+     * Registers a social network
+     * @param string $offset Social network name, gets from $value::getSocialName() if empty
+     * @param string $value Social network class name
      * @return void
+     * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
+     *
+     * @see SocialSource::getSocialName()
      */
     public function offsetSet($offset, $value) {
-        if (!is_string($offset)) {
-            throw new \Exception('Social\'s name must be a string');
-            // TODO Exception
+        if (!is_string($offset) && !is_null($offset)) {
+            throw new \InvalidArgumentException('Social network\'s name must be a string');
         }
-        
+
         if (!is_string($value)) {
-            throw new \Exception('Social\'s class name must be a string');
-            // TODO Exception
+            throw new \InvalidArgumentException('Social network\'s class name must be a string');
         }
-        
+
         if (!SocialSource::isSocialSource($value)) {
             throw new \UnexpectedValueException("Class \"{$value}\" isn't a SocialSource");
         }
 
-        if (empty($offset)) {
+        if (is_null($offset)) {
             $offset = $value::getSocialName();
         }
 
         $this->socials[$offset] = $value;
     }
 
+    /**
+     * Unregisters a social network
+     * @param string $offset Social network name
+     * @return void
+     * @throws \OutOfBoundsException
+     */
     public function offsetUnset($offset) {
         if (isset($this->socials[$offset])) {
             unset($this->socials[$offset]);
             return;
         }
 
-        if (!SocialSource::isSocialSource($offset)) {
-            throw new \UnexpectedValueException("Social \"{$id}\" isn't registered");
+        $key = array_search($offset, $this->socials, true);
+
+        if ($key === false) {
+            throw new \OutOfBoundsException("Social network \"{$offset}\" isn't registered");
         }
 
-        $key = array_search($id, static::$socials, true);
-
-        if ($key !== false) {
-            unset($this->socials[$key]);
-        }
+        unset($this->socials[$key]);
     }
 
 }

@@ -2,6 +2,8 @@
     "name": "progminer/social-feed-core",
     "description": "Core of SocialFeedEngine",
     "type": "library",
+    "keywords": ["social", "feed"],
+    "license": "MIT",
     "authors": [
         {
             "name": "ProgMiner",
@@ -10,13 +12,15 @@
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "require": {},
-    "config": {
-        "optimize-autoloader": true
+    "require": {
+        "php": ">=7.0.0"
     },
     "autoload": {
         "psr-4": {
             "SocialFeedCore\\": "src"
         }
+    },
+    "config": {
+        "optimize-autoloader": true
     }
 }

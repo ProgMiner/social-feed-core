@@ -3,7 +3,7 @@
 /*
  * This file is part of SocialFeedCore.
  *
- * Copyright (c) 2017 Eridan Domoratskiy
+ * Copyright (c) 2018 Eridan Domoratskiy
  */
 
 namespace SocialFeedCore;
@@ -50,6 +50,13 @@ abstract class SocialSource implements \ArrayAccess {
      */
     public abstract function getLastPosts(int $count): array;
 
+    /**
+     * Checks class is it a subclass of SocialSource
+     * @param string $className Name of class to checking
+     * @return bool Returns true if class is a subclass of SocialSource, false otherwise
+     *
+     * @see SocialSource
+     */
     public final static function isSocialSource(string $className): bool {
         if (!class_exists($className, true)) {
             return false;
