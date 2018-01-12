@@ -157,7 +157,8 @@ class VKSocialSource extends SocialSource {
         $posts = [];
         $_postsTmp = [];
 
-        for ($offset = 0; $posts[count($posts) - 1]->date > $after;
+        for ($offset = 0;
+                    $offset == 0 || $posts[count($posts) - 1]->date > $after;
                     $offset += count($_postsTmp)) {
             $options['offset'] = $offset;
             $_postsTmp = $this->getPosts($options);
