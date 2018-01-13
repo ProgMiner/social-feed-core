@@ -19,13 +19,26 @@ use SocialFeedCore\SocialSourceManager;
  */
 class SocialSourcesServiceProvider implements ServiceProviderInterface {
 
+    /**
+     * Default provider settings
+     *
+     * @var array
+     */
+    private static $defaults = [
+        'social.sources.import_force' => false,
+        'social.sources.import_list' => []
+    ];
+
     public function register(Container $cont) {
         $cont['social.sources_factory'] = $cont->factory(function() {
             return new SocialSourceManager();
         });
 
-        $cont['social.sources.import_force'] = false;
-        $cont['social.sources.import_list'] = [];
+        foreach (static::$defaults as $field => $value) {
+            if (!isset($cont[$field])) {
+                $cont[$field] = $value;
+            }
+        }
 
         $cont['social.sources'] = function(Container $cont) {
             $socialSourcesManager = $cont['social.sources_factory'];

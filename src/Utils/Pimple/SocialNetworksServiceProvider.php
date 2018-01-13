@@ -20,15 +20,28 @@ use SocialFeedCore\SocialSources\VKSocialSource;
  */
 class SocialNetworksServiceProvider implements ServiceProviderInterface {
 
+    /**
+     * Default provider settings
+     *
+     * @var array
+     */
+    private static $defaults = [
+        'social.networks.import_force' => false,
+        'social.networks.import_list' => [
+            VKSocialSource::class
+        ]
+    ];
+
     public function register(Container $cont) {
         $cont['social.networks_factory'] = $cont->factory(function() {
             return new SocialManager();
         });
 
-        $cont['social.networks.import_force'] = false;
-        $cont['social.networks.import_list'] = [
-            VKSocialSource::class
-        ];
+        foreach (static::$defaults as $field => $value) {
+            if (!isset($cont[$field])) {
+                $cont[$field] = $value;
+            }
+        }
 
         $cont['social.networks'] = function(Container $cont) {
             $socialManager = $cont['social.networks_factory'];
