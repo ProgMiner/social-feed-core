@@ -190,6 +190,11 @@ class SocialSourceManager implements \ArrayAccess {
                 throw new \OutOfBoundsException("Social source with id {$value} isn't exists");
             }
 
+            $id = array_search($value, $this->sources, true);
+            if ($id !== false) {
+                unset($this->ids[$id]);
+            }
+
             $this->ids[$offset] = $value;
             return;
         }
