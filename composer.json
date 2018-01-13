@@ -2,7 +2,7 @@
     "name": "progminer/social-feed-core",
     "description": "Core of SocialFeedEngine",
     "type": "library",
-    "keywords": ["social", "feed"],
+    "keywords": ["social", "feed", "vk"],
     "license": "MIT",
     "authors": [
         {

@@ -12,20 +12,22 @@ use SocialFeedCore\SocialSource;
 
 /**
  * Manager of social networks (SocialSource classes)
+ *
  * @author ProgMiner
  */
 class SocialManager implements \ArrayAccess {
 
     /**
      * Array of social networks
+     *
      * @var array
      */
     protected $socials = [];
 
     /**
      * Imports social networks from array
+     *
      * @param array $socials Array of social networks to importing
-     * @return void
      */
     public function import(array $socials) {
         foreach ($socials as $socialName => $social) {
@@ -41,8 +43,8 @@ class SocialManager implements \ArrayAccess {
      * Merges social networks from array without checks
      *
      * !!!IMPORTANT!!! Use this only for optimizing import from SocialManager::export()
-     * @param array $socials Array of social
-     * @return void
+     *
+     * @param array $socials Array of social networks
      *
      * @see SocialManager::export()
      */
@@ -52,6 +54,7 @@ class SocialManager implements \ArrayAccess {
 
     /**
      * Returns a list of all registered social networks
+     *
      * @return array List of social networks
      */
     public function export(): array {
@@ -59,8 +62,8 @@ class SocialManager implements \ArrayAccess {
     }
 
     /**
-     * Checks if a social network is registered
      * @param string $offset Social network name or class name
+     *
      * @return bool True if the social network is registered, false otherwise
      */
     public function offsetExists($offset): bool {
@@ -72,8 +75,8 @@ class SocialManager implements \ArrayAccess {
     }
 
     /**
-     * Returns a social network class name by name or class name
      * @param string $offset A social network name or class name
+     *
      * @return string A social network class name
      */
     public function offsetGet($offset) {
@@ -89,10 +92,9 @@ class SocialManager implements \ArrayAccess {
     }
 
     /**
-     * Registers a social network
      * @param string $offset Social network name, gets from $value::getSocialName() if empty
      * @param string $value Social network class name
-     * @return void
+     *
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      *
@@ -119,9 +121,8 @@ class SocialManager implements \ArrayAccess {
     }
 
     /**
-     * Unregisters a social network
      * @param string $offset Social network name
-     * @return void
+     *
      * @throws \OutOfBoundsException
      */
     public function offsetUnset($offset) {

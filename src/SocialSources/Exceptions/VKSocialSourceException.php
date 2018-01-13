@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of SocialFeedCore
+ * This file is part of SocialFeedCore.
  *
  * Copyright (c) 2018 Eridan Domoratskiy
  */
@@ -11,7 +11,7 @@ namespace SocialFeedCore\SocialSources\Exceptions;
 use SocialFeedCore\Utils\DataClassTrait;
 
 /**
- * Description of VKSocialSourceException
+ * VKAPI Exception
  *
  * @author ProgMiner
  */

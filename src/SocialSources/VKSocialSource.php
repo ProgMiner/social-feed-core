@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of SocialFeedCore
+ * This file is part of SocialFeedCore.
  *
  * Copyright (c) 2018 Eridan Domoratskiy
  */
@@ -19,6 +19,7 @@ use SocialFeedCore\SocialSources\Exceptions\VKSocialSourceException;
  * Requires global "access_token" setting
  * for VK API access token and
  * id of source (profile, group)
+ *
  * @author ProgMiner
  */
 class VKSocialSource extends SocialSource {
@@ -27,11 +28,14 @@ class VKSocialSource extends SocialSource {
 
     /**
      * Requests VK API method
+     *
      * @param string $method API method name
      * @param array $params Request parameters
      * @param type $accessToken Access token for request
      * @param bool $checkError If true check if result contains error and throw exception
+     *
      * @return mixed Response object if $checkError = true, full result object otherwise
+     *
      * @throws VKSocialSourceException
      */
     public static function api(string $method, array $params = [],
@@ -60,7 +64,9 @@ class VKSocialSource extends SocialSource {
 
     /**
      * Returns id by screen name
+     *
      * @param string $screenName Screen name
+     *
      * @return array Array with id and object type
      */
     public static function getIdByScreenName(string $screenName): array {
@@ -106,7 +112,7 @@ class VKSocialSource extends SocialSource {
 
     /**
      * @param int|string $id Id of source
-     * @return void
+     * 
      * @throws \InvalidArgumentException
      */
     public function __construct($id) {

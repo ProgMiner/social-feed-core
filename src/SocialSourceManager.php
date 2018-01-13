@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of SocialFeedCore
+ * This file is part of SocialFeedCore.
  *
  * Copyright (c) 2018 Eridan Domoratskiy
  */
@@ -12,26 +12,82 @@ use SocialFeedCore\Utils\Post;
 
 /**
  * Manager of social sources
+ *
  * @author ProgMiner
  */
 class SocialSourceManager implements \ArrayAccess {
 
     /**
      * Array of social sources
+     *
      * @var array
      */
     protected $sources = [];
 
     /**
      * Array of social source text ids
+     *
      * @var array
      */
     protected $ids = [];
 
     /**
+     * Imports social sources from array
+     *
+     * @param array $sources Array of social sources to importing
+     */
+    public function import(array $sources) {
+        foreach ($sources as $id => $source) {
+            if (!is_string($id)) {
+                $this[] = $source;
+            } else {
+                $this[$id] = $source;
+            }
+        }
+    }
+
+    /**
+     * Merges social networks from array without checks
+     *
+     * !!!IMPORTANT!!! Use this only for optimizing import from SocialSourceManager::export()
+     *
+     * @param array $sources Array of social
+     *
+     * @see SocialSourceManager::export()
+     */
+    public function importForce(array $sources) {
+        foreach ($sources as $id => $source) {
+            if (!is_string($id)) {
+                $this->ids[$offset] = count($this->sources);
+            }
+
+            $this->sources[] = $source;
+        }
+    }
+
+    /**
+     * Exports social sources as array
+     *
+     * @return array
+     */
+    public function export(): array {
+        $sources = $this->sources;
+
+        foreach ($this->ids as $id => $index) {
+            $sources[$id] = $sources[$index];
+            unset($sources[$index]);
+        }
+
+        return $sources;
+    }
+
+    /**
      * Return social source id by text id if exists
+     *
      * @param string $alias Social source text id
+     *
      * @return int Social source id
+     *
      * @throws \OutOfBoundsException
      */
     public function getId(string $alias): int {
@@ -44,7 +100,9 @@ class SocialSourceManager implements \ArrayAccess {
 
     /**
      * Returns new posts since $after
+     *
      * @param DateTime $after Time
+     *
      * @return array Array of Posts
      */
     public function getNewPosts(\DateTime $after): array {
@@ -59,7 +117,9 @@ class SocialSourceManager implements \ArrayAccess {
 
     /**
      * Returns last posts
+     *
      * @param int $count Count (0 for all)
+     *
      * @return array Array of Posts
      */
     public function getLastPosts(int $count): array {
@@ -74,8 +134,11 @@ class SocialSourceManager implements \ArrayAccess {
 
     /**
      * Checks if a social source is exists
+     *
      * @param int|string $offset Social source id or text id
+     *
      * @return bool
+     *
      * @throws \InvalidArgumentException
      */
     public function offsetExists($offset): bool {
@@ -92,8 +155,11 @@ class SocialSourceManager implements \ArrayAccess {
 
     /**
      * Returns social source by id or text id
+     *
      * @param int|string $offset Social source id or text id
+     *
      * @return SocialSource
+     *
      * @throws \InvalidArgumentException
      */
     public function offsetGet($offset) {
@@ -111,9 +177,10 @@ class SocialSourceManager implements \ArrayAccess {
     /**
      * Adds new social source with id or text id
      * or adds text id (alias) to id
+     *
      * @param int|string $offset Social source id or text id
      * @param int|SocialSource $value Social source id or object
-     * @return void
+     *
      * @throws \OutOfBoundsException
      * @throws \InvalidArgumentException
      */
@@ -142,7 +209,7 @@ class SocialSourceManager implements \ArrayAccess {
         }
 
         if (is_string($offset)) {
-            $this->ids[count($this->sources)] = $offset;
+            $this->ids[$offset] = count($this->sources);
             $this->sources[] = $value;
             return;
         }
@@ -152,7 +219,9 @@ class SocialSourceManager implements \ArrayAccess {
 
     /**
      * Removes social source by id or text id
+     *
      * @param int|string $offset Social source id or text id
+     *
      * @throws \OutOfBoundsException
      * @throws \InvalidArgumentException
      */

@@ -19,6 +19,7 @@ namespace SocialFeedCore\Utils;
  * Supports defaults()
  * method returns array with
  * defaults field values.
+ *
  * @author ProgMiner
  */
 trait DataClassTrait {
@@ -31,7 +32,9 @@ trait DataClassTrait {
     /**
      * Returns data-class config from
      * requirements() and defaults()
+     *
      * @return array Requirements and defaults
+     * 
      * @throws LogicException
      */
     private function getDataClassConfiguration(): array {

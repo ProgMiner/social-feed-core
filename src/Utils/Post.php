@@ -10,6 +10,7 @@ namespace SocialFeedCore\Utils;
 
 /**
  * Post from social source
+ *
  * @author ProgMiner
  */
 class Post {
@@ -18,8 +19,11 @@ class Post {
 
     /**
      * Sorts array of Posts by date
+     *
      * @param array $posts Array of Posts
+     *
      * @return array Sorted array
+     * 
      * @throws \RuntimeException
      */
     public static function sortPostsByDate(array $posts, $sortOrder = SORT_DESC): array {
