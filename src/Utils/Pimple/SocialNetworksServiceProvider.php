@@ -10,7 +10,7 @@ namespace SocialFeedCore\Utils\Pimple;
 
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
-use SocialFeedCore\Utils\SocialManager;
+use SocialFeedCore\SocialManager;
 use SocialFeedCore\SocialSources\VKSocialSource;
 
 /**
