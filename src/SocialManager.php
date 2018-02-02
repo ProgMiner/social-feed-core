@@ -6,9 +6,7 @@
  * Copyright (c) 2018 Eridan Domoratskiy
  */
 
-namespace SocialFeedCore\Utils;
-
-use SocialFeedCore\SocialSource;
+namespace SocialFeedCore;
 
 /**
  * Manager of social networks (SocialSource classes)
