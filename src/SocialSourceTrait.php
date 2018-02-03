@@ -30,6 +30,13 @@ trait SocialSourceTrait {
     private static $_init = false;
 
     /**
+     * Social initialize options
+     *
+     * @var array|callable
+     */
+    private static $_initOptions = null;
+
+    /**
      * Local source's settings
      *
      * @var type
@@ -39,19 +46,30 @@ trait SocialSourceTrait {
     protected abstract static function _init();
 
     /**
-     * Initializes a social network class
+     * Initializes a social network class or sets init options for lazy using
      *
      * @param array $initOptions Init global options
      */
-    public static function init(array $initOptions = []) {
+    public static function init($initOptions = null) {
         if (static::$_init !== false) {
             return;
         }
 
-        static::$_init = true;
+        if (is_array($initOptions) || is_callable($initOptions)) {
+            static::$_initOptions = $initOptions;
+            return;
+        }
+
+        if (is_callable(static::$_initOptions)) {
+            $initOptions = static::$_initOptions(static::class);
+        } elseif (is_array(static::$_initOptions)) {
+            $initOptions = static::$_initOptions;
+        }
 
         static::_init();
         static::$global = array_merge(static::$global, $initOptions);
+
+        static::$_init = true;
     }
 
     /**
