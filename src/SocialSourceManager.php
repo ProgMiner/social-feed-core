@@ -129,7 +129,8 @@ class SocialSourceManager implements \ArrayAccess {
             $ret = array_merge($ret, $source->getLastPosts($count));
         }
 
-        return Post::sortPostsByDate($ret);
+        $ret = Post::sortPostsByDate($ret);
+        return array_slice($ret, 0, $count);
     }
 
     /**
