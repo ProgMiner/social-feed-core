@@ -20,8 +20,8 @@ class Author {
     private function requirements() {
         return [
             'id' => function($id) {
-                if (!is_int($id) || $id < 0) {
-                    throw new \UnexpectedValueException('Id must be positive integer');
+                if (!is_int($id)) {
+                    throw new \UnexpectedValueException('Id must be integer');
                 }
                 return $id;
             },
