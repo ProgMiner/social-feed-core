@@ -58,7 +58,7 @@ class SocialSourceManager implements \ArrayAccess {
     public function importForce(array $sources) {
         foreach ($sources as $id => $source) {
             if (!is_string($id)) {
-                $this->ids[$offset] = count($this->sources);
+                $this->ids[] = count($this->sources);
             }
 
             $this->sources[] = $source;
