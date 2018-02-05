@@ -163,15 +163,13 @@ class VKSocialSource extends SocialSource {
             $authors[$profile->id] = $profile;
         }
 
-        /*
         foreach ($result->groups as $group) {
             $group->full_name = $profile->first_name = $profile->name;
             $group->avatar = $profile->photo_200;
             $group->url = "https://vk.com/{$profile->screen_name}";
 
-            $authors[$group->id] = $group;
+            $authors[$group->id * -1] = $group;
         }
-        */
 
         $result = $result->items;
 
