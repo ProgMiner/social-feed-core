@@ -161,7 +161,8 @@ class VKSocialSource extends SocialSource {
     public function getPost(int $id): Post {
         $result = static::api('wall.getById', [
             'posts'    => "{$this['id']}_{$id}",
-            'extended' => 1
+            'extended' => 1,
+            'fields'   => 'domain, photo_max'
         ], $this['access_token']);
 
         $authors = static::extractAuthors($result);
