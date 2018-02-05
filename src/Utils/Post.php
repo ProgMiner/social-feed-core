@@ -23,13 +23,17 @@ class Post {
      * @param array $posts Array of Posts
      *
      * @return array Sorted array
-     * 
+     *
      * @throws \RuntimeException
      */
     public static function sortPostsByDate(array $posts, $sortOrder = SORT_DESC): array {
         $dates = [];
 
         foreach ($posts as $post) {
+            if (is_a($post, static::class)) {
+                throw new \InvalidArgumentException('Input array contains not a Post(s)');
+            }
+
             $dates[] = $post->date->getTimestamp();
         }
 
