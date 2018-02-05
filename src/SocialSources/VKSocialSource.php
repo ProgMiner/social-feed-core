@@ -89,7 +89,7 @@ class VKSocialSource extends SocialSource {
         ];
     }
 
-    private static function makePost($post): Post {
+    private static function makePost($post, $author): Post {
         $post = (array) $post;
 
         $post['content'] = $post['text'];
@@ -102,6 +102,8 @@ class VKSocialSource extends SocialSource {
         if (isset($post['views'])) {
             $post['views'] = $post['views']->count;
         }
+
+        $post['author'] = $author;
 
         return new Post($post);
     }
