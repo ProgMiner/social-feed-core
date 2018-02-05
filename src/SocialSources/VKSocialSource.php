@@ -104,7 +104,7 @@ class VKSocialSource extends SocialSource {
         }
 
         $post['author'] = (array) $author;
-        $post['url'] = "https://vk.com/wall{$post['author']['id']}_{$post['id']}";
+        $post['url'] = "https://vk.com/wall{$post['author']['owner_id']}_{$post['id']}";
 
         return new Post($post);
     }
