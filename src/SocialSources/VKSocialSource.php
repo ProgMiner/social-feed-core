@@ -174,9 +174,12 @@ class VKSocialSource extends SocialSource {
         $options['owner_id'] = $this['id'];
         $options['extended'] = 1;
 
-        if (isset($options['fields'])) {
-            $options['fields'] .= ', domain, photo_max';
+        if (!isset($options['fields'])) {
+            $options['fields'] = '';
+        } elseif (!empty($options['fields'])) {
+            $options['fields'] .= ', ';
         }
+        $options['fields'] .= 'domain, photo_max';
 
         $result = static::api('wall.get', $options, $this['access_token']);
 
