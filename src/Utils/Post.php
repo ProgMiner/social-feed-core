@@ -78,6 +78,12 @@ class Post {
                     $author = new Author($author);
                 }
                 return $author;
+            },
+            'url' => function($url) {
+                if (!$this->is_url($url)) {
+                    throw new \InvalidArgumentException('URL is not URL');
+                }
+                return $url;
             }
         ];
     }
