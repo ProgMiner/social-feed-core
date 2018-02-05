@@ -103,9 +103,31 @@ class VKSocialSource extends SocialSource {
             $post['views'] = $post['views']->count;
         }
 
-        $post['author'] = $author;
+        $post['author'] = (array) $author;
 
         return new Post($post);
+    }
+
+    private static function extractAuthors($result): array {
+        $authors = [];
+
+        foreach ($result->profiles as $profile) {
+            $profile->full_name = "{$profile->first_name} {$profile->last_name}";
+            $profile->avatar = $profile->photo_max;
+            $profile->url = "https://vk.com/{$profile->domain}";
+
+            $authors[$profile->id] = $profile;
+        }
+
+        foreach ($result->groups as $group) {
+            $group->full_name = $profile->first_name = $profile->name;
+            $group->avatar = $profile->photo_200;
+            $group->url = "https://vk.com/{$profile->screen_name}";
+
+            $authors[$group->id * -1] = $group;
+        }
+
+        return $authors;
     }
 
     public static function getSocialName(): string {
@@ -137,11 +159,15 @@ class VKSocialSource extends SocialSource {
     }
 
     public function getPost(int $id): Post {
-        $result = static::api('wall.getById',
-                              ['posts' => "{$this['id']}_{$id}"],
-                              $this['access_token']);
+        $result = static::api('wall.getById', [
+            'posts'    => "{$this['id']}_{$id}",
+            'extended' => 1
+        ], $this['access_token']);
 
-        return static::makePost($result);
+        $authors = static::extractAuthors($result);
+        $result = $result->items[0];
+
+        return static::makePost($result, $authors[$result->from_id]);
     }
 
     public function getPosts(array $options = []): array {
@@ -154,23 +180,7 @@ class VKSocialSource extends SocialSource {
 
         $result = static::api('wall.get', $options, $this['access_token']);
 
-        $authors = [];
-        foreach ($result->profiles as $profile) {
-            $profile->full_name = "{$profile->first_name} {$profile->last_name}";
-            $profile->avatar = $profile->photo_max;
-            $profile->url = "https://vk.com/{$profile->domain}";
-
-            $authors[$profile->id] = $profile;
-        }
-
-        foreach ($result->groups as $group) {
-            $group->full_name = $profile->first_name = $profile->name;
-            $group->avatar = $profile->photo_200;
-            $group->url = "https://vk.com/{$profile->screen_name}";
-
-            $authors[$group->id * -1] = $group;
-        }
-
+        $authors = static::extractAuthors($result);
         $result = $result->items;
 
         $posts = [];
@@ -195,9 +205,11 @@ class VKSocialSource extends SocialSource {
         $posts = [];
         $_postsTmp = [];
 
-        for ($offset = 0;
-                    $offset == 0 || $posts[count($posts) - 1]->date > $after;
-                    $offset += count($_postsTmp)) {
+        for (
+                $offset = 0;
+                $offset == 0 || $posts[count($posts) - 1]->date > $after;
+                $offset += count($_postsTmp)
+        ) {
             $options['offset'] = $offset;
             $_postsTmp = $this->getPosts($options);
             $posts = array_merge($posts, $_postsTmp);
