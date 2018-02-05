@@ -72,6 +72,12 @@ class Post {
                     $content = strval($content);
                 }
                 return $content;
+            },
+            'author' => function($author) {
+                if (!is_a($author, Author::class)) {
+                    $author = new Author($author);
+                }
+                return $author;
             }
         ];
     }

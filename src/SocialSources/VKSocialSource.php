@@ -144,12 +144,38 @@ class VKSocialSource extends SocialSource {
 
     public function getPosts(array $options = []): array {
         $options['owner_id'] = $this['id'];
+        $options['extended'] = 1;
 
-        $result = static::api('wall.get', $options, $this['access_token'])->items;
+        if (isset($options['fields'])) {
+            $options['fields'] .= ', domain, photo_max';
+        }
+
+        $result = static::api('wall.get', $options, $this['access_token']);
+
+        $authors = [];
+        foreach ($result->profiles as $profile) {
+            $profile->full_name = "{$profile->first_name} {$profile->last_name}";
+            $profile->avatar = $profile->photo_max;
+            $profile->url = "https://vk.com/{$profile->domain}";
+
+            $authors[$profile->id] = $profile;
+        }
+
+        /*
+        foreach ($result->groups as $group) {
+            $group->full_name = $profile->first_name = $profile->name;
+            $group->avatar = $profile->photo_200;
+            $group->url = "https://vk.com/{$profile->screen_name}";
+
+            $authors[$group->id] = $group;
+        }
+        */
+
+        $result = $result->items;
 
         $posts = [];
         foreach ($result as $post) {
-            $posts[] = static::makePost($post);
+            $posts[] = static::makePost($post, $authors[$post->from_id]);
         }
 
         return Post::sortPostsByDate($posts);

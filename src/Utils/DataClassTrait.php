@@ -34,7 +34,7 @@ trait DataClassTrait {
      * requirements() and defaults()
      *
      * @return array Requirements and defaults
-     * 
+     *
      * @throws LogicException
      */
     private function getDataClassConfiguration(): array {
@@ -106,6 +106,19 @@ trait DataClassTrait {
 
     public function __unset(string $name) {
         throw new \LogicException('You can\'t edit data in data-class');
+    }
+
+    /**
+     * URL validator for requirements
+     *
+     * @link http://urlregex.com/
+     *
+     * @param string $url String for validating
+     *
+     * @return bool Is URL
+     */
+    private function is_url(string $url): bool {
+        return preg_match('%^(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@|\d{1,3}(?:\.\d{1,3}){3}|(?:(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)(?:\.(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*(?:\.[a-z\x{00a1}-\x{ffff}]{2,6}))(?::\d+)?(?:[^\s]*)?$%iu', $url) === 1;
     }
 
 }
