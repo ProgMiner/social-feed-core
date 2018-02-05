@@ -30,7 +30,7 @@ class Post {
         $dates = [];
 
         foreach ($posts as $post) {
-            if (is_a($post, static::class)) {
+            if (!is_a($post, static::class)) {
                 throw new \InvalidArgumentException('Input array contains not a Post(s)');
             }
 
