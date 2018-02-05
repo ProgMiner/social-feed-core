@@ -40,6 +40,8 @@ class VKSocialSource extends SocialSource {
      */
     public static function api(string $method, array $params = [],
                                $accessToken = null, bool $checkError = true) {
+        static::init();
+
         if (is_null($accessToken)) {
             if (!isset(static::$global['access_token'])) {
                 throw new \LogicException('Access token is undefined');
@@ -47,8 +49,6 @@ class VKSocialSource extends SocialSource {
 
             $accessToken = static::$global['access_token'];
         }
-
-        static::init();
 
         $request_params = array_merge(static::$global['default_api_params'],
                                       ['access_token' => $accessToken], $params);
