@@ -121,11 +121,14 @@ class VKSocialSource extends SocialSource {
         }
 
         foreach ($result->groups as $group) {
+            $group->id *= -1;
+
             $group->full_name = $group->first_name = $group->name;
+
             $group->avatar = $group->photo_200;
             $group->url = "https://vk.com/{$group->screen_name}";
 
-            $authors[$group->id * -1] = $group;
+            $authors[$group->id] = $group;
         }
 
         return $authors;
