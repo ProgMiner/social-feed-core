@@ -1,6 +1,6 @@
 {
     "name": "progminer/social-feed-core",
-    "description": "Core of SocialFeedEngine",
+    "description": "Library for getting posts from social networks",
     "type": "library",
     "keywords": ["social", "feed", "vk"],
     "license": "MIT",
@@ -13,17 +13,19 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=7.0.0",
+        "symfony/config": "^4.0"
     },
     "require-dev": {
         "pimple/pimple": "~3.0"
     },
     "autoload": {
         "psr-4": {
-            "SocialFeedCore\\": "src"
+            "SocialFeedCore\\": "lib"
         }
     },
     "config": {
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "sort-packages": true
     }
 }

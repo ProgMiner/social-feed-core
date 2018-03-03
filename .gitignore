@@ -1,8 +1,6 @@
-composer.phar
 /vendor/
+/composer.phar
+/composer.lock
 
 /nbproject/
-/social-feed-core.sublime-project
-/social-feed-core.sublime-workspace
-
-/tests/
+*.sw?
