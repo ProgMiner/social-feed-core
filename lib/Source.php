@@ -27,11 +27,11 @@ namespace SocialFeedCore;
 use SocialFeedCore\Utility\RequestOptions;
 
 /**
- * A class for social sources
+ * A class for sources of posts
  *
  * @author ProgMiner
  */
-class SocialSource {
+class Source {
 
     /**
      * @var ISocialNetwork Social network of this source
@@ -50,5 +50,18 @@ class SocialSource {
     public function __construct(ISocialNetwork $network, RequestOptions $options) {
         $this->network = $network;
         $this->options = $options;
+    }
+
+    /**
+     * Returns posts from sourcevby options
+     *
+     * @param RequestOptions $options
+     *
+     * @return Post[] Array of posts
+     */
+    public function getPosts(RequestOptions $options) {
+        $options->mergeWith($this->options);
+
+        return $this->network->getPosts($options);
     }
 }

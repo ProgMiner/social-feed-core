@@ -55,9 +55,9 @@ interface ISocialNetwork {
      * @param int                 $id      Internal identificator of source
      * @param RequestOptions|null $options Additional options for source
      *
-     * @return SocialSource
+     * @return Source
      */
-    public abstract function getSource(int $id, $options = null): SocialSource {
+    public abstract function getSource(int $id, $options = null): Source {
         if (is_null($options)) {
             $options = new RequestOptions();
         }
@@ -68,6 +68,6 @@ interface ISocialNetwork {
 
         $options->sourceId = $id;
 
-        return new SocialSource($this, $options);
+        return new Source($this, $options);
     }
 }

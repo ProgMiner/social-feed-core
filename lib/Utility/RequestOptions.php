@@ -48,11 +48,11 @@ class RequestOptions implements ConfigurationInterface {
                 children()->
 
                     integerNode('sourceId')->
-                        isRequired()->
+                        defaultValue(0)->
                     end()->
 
                     integerNode('id')->
-                        isRequired()->
+                        defaultValue(0)->
                     end()->
 
                     variableNode('meta')->
@@ -66,7 +66,7 @@ class RequestOptions implements ConfigurationInterface {
         return $treeBuilder;
     }
 
-    protected function validate(array $options): array {
+    protected function _validate(array $options): array {
         static $processor;
 
         if (is_null($processor)) {

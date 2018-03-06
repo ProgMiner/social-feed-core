@@ -31,39 +31,89 @@ namespace SocialFeedCore\Utility;
  */
 trait OptionsTrait {
 
-    protected abstract function validate(array $options): array;
+    protected $options = [];
 
+    /**
+     * Returns array of validated data
+     *
+     * @param array Array with data for validation
+     *
+     * @return array Array with validated data
+     */
+    protected abstract function _validate(array $options): array;
+
+    /**
+     * @param array $init Initialization data
+     */
     public function __construct(array $init = []) {
-        $options = & $this->getOptions();
-        $options = $this->validate($init);
+        $this->options = $init;
+        $this->validate();
+    }
+
+    /**
+     * Merges data from an object of same class or an array
+     *
+     * @param static|array $src       Source
+     * @param callable     $mergeFunc Function for merging
+     *
+     * @return $this
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function mergeFrom($src, callable $mergeFunc = null) {
+        if (is_null($mergeFunc)) {
+            $mergeFunc = 'array_merge';
+        }
+
+        if (is_a($src, static::class, true)) {
+            $src = $src->toArray();
+        }
+
+        if (!is_array($src)) {
+            throw new \InvalidArgumentException('Source must be an array or a '.static::class);
+        }
+
+        $this->options = $mergeFunc($this->options, $src);
+        $this->validate();
+
+        return $this;
+    }
+
+    /**
+     * Returns an array with data from object
+     *
+     * @return array Data
+     */
+    public function toArray() {
+        return $this->options;
+    }
+
+    /**
+     * Validates data in object
+     *
+     * @return $this
+     */
+    public function validate() {
+        $this->options = $this->_validate($this->options);
+
+        return $this;
     }
 
     public function __isset($key) {
-        return isset($this->getOptions()[$key]);
+        return isset($this->options[$key]);
     }
 
     public function __get($key) {
-        return $this->getOptions()[$key];
+        return $this->options[$key];
     }
 
     public function __set($key, $value) {
-        $options = & $this->getOptions();
-        $options[$key] = $value;
-
-        $options = $this->validate($options);
+        $this->options[$key] = $value;
+        $this->validate();
     }
 
     public function __unset($key) {
-        $options = & $this->getOptions();
-        unset($options[$key]);
-
-        $options = $this->validate($options);
-    }
-
-    protected function & getOptions(): array {
-        static $options = [];
-        $options = (array) $options;
-
-        return $options;
+        unset($this->options[$key]);
+        $this->validate();
     }
 }
