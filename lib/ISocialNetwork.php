@@ -41,13 +41,13 @@ interface ISocialNetwork {
     public function getOptions(): RequestOptions;
 
     /**
-     * Returns posts from social network by options
+     * Returns posts from social network
      *
-     * @param RequestOptions $options Request options
+     * @param RequestOptions|array $options Additional options
      *
      * @return Post[] Array of Posts
      */
-    public function getPosts(RequestOptions $options): array;
+    public function getPosts($options): array;
 
     /**
      * Returns source from current social network

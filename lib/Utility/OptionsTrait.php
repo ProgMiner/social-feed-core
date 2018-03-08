@@ -31,14 +31,22 @@ namespace SocialFeedCore\Utility;
  */
 trait OptionsTrait {
 
-    protected $options = [];
+    /**
+     * @var array Array of raw data
+     */
+    protected $raw = [];
 
     /**
-     * Returns array of validated data
+     * @var array Array of validated data
+     */
+    protected $validated = [];
+
+    /**
+     * Validates data
      *
-     * @param array Array with data for validation
+     * @param array Data for validation
      *
-     * @return array Array with validated data
+     * @return array Validated data
      */
     protected abstract function _validate(array $options): array;
 
@@ -46,7 +54,7 @@ trait OptionsTrait {
      * @param array $init Initialization data
      */
     public function __construct(array $init = []) {
-        $this->options = $init;
+        $this->raw = $init;
         $this->validate();
     }
 
@@ -66,14 +74,14 @@ trait OptionsTrait {
         }
 
         if (is_a($src, static::class, true)) {
-            $src = $src->toArray();
+            $src = $src->raw;
         }
 
         if (!is_array($src)) {
             throw new \InvalidArgumentException('Source must be an array or a '.static::class);
         }
 
-        $this->options = $mergeFunc($this->options, $src);
+        $this->raw = $mergeFunc($this->raw, $src);
         $this->validate();
 
         return $this;
@@ -85,7 +93,7 @@ trait OptionsTrait {
      * @return array Data
      */
     public function toArray() {
-        return $this->options;
+        return $this->validated;
     }
 
     /**
@@ -94,26 +102,26 @@ trait OptionsTrait {
      * @return $this
      */
     public function validate() {
-        $this->options = $this->_validate($this->options);
+        $this->validated = $this->_validate($this->raw);
 
         return $this;
     }
 
     public function __isset($key) {
-        return isset($this->options[$key]);
+        return isset($this->validated[$key]);
     }
 
     public function __get($key) {
-        return $this->options[$key];
+        return $this->validated[$key];
     }
 
     public function __set($key, $value) {
-        $this->options[$key] = $value;
+        $this->raw[$key] = $value;
         $this->validate();
     }
 
     public function __unset($key) {
-        unset($this->options[$key]);
+        unset($this->raw[$key]);
         $this->validate();
     }
 }

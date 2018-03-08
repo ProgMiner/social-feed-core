@@ -55,6 +55,10 @@ class RequestOptions implements ConfigurationInterface {
                         defaultValue(0)->
                     end()->
 
+                    integerNode('count')->
+                        defaultValue(0)->
+                    end()->
+
                     variableNode('meta')->
                     end()->
 

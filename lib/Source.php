@@ -27,7 +27,7 @@ namespace SocialFeedCore;
 use SocialFeedCore\Utility\RequestOptions;
 
 /**
- * A class for sources of posts
+ * A class of sources of posts
  *
  * @author ProgMiner
  */
@@ -53,14 +53,14 @@ class Source {
     }
 
     /**
-     * Returns posts from sourcevby options
+     * Returns posts from source
      *
-     * @param RequestOptions $options
+     * @param RequestOptions|array $options Additional options
      *
      * @return Post[] Array of posts
      */
-    public function getPosts(RequestOptions $options) {
-        $options->mergeWith($this->options);
+    public function getPosts($options = []): array {
+        $options = (clone $this->options)->mergeFrom($options);
 
         return $this->network->getPosts($options);
     }
