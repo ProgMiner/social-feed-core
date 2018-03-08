@@ -34,7 +34,7 @@ use SocialFeedCore\Utility\RequestOptions;
 class Source {
 
     /**
-     * @var ISocialNetwork Social network of this source
+     * @var INetwork Social network of this source
      */
     protected $network;
 
@@ -44,10 +44,10 @@ class Source {
     protected $options;
 
     /**
-     * @param ISocialNetwork $network Social network
+     * @param INetwork $network Social network
      * @param RequestOptions $options Initial request options
      */
-    public function __construct(ISocialNetwork $network, RequestOptions $options) {
+    public function __construct(INetwork $network, RequestOptions $options) {
         $this->network = $network;
         $this->options = $options;
     }
