@@ -68,7 +68,7 @@ trait OptionsTrait {
      *
      * @throws \InvalidArgumentException
      */
-    public function mergeFrom($src, callable $mergeFunc = null) {
+    public function mergeWith($src, callable $mergeFunc = null) {
         if (is_null($mergeFunc)) {
             $mergeFunc = 'array_merge';
         }
@@ -81,10 +81,9 @@ trait OptionsTrait {
             throw new \InvalidArgumentException('Source must be an array or a '.static::class);
         }
 
-        $this->raw = $mergeFunc($this->raw, $src);
-        $this->validate();
+        $merged = $mergeFunc($this->raw, $src);
 
-        return $this;
+        return new static($merged);
     }
 
     /**

@@ -60,8 +60,8 @@ class Source {
      * @return Post[] Array of posts
      */
     public function getPosts($options = []): array {
-        $options = (clone $this->options)->mergeFrom($options);
-
-        return $this->network->getPosts($options);
+        return $this->network->getPosts(
+            $this->options->mergeWith($options)
+        );
     }
 }

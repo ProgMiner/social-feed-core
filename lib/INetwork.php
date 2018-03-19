@@ -48,26 +48,4 @@ interface INetwork {
      * @return Post[] Array of Posts
      */
     public function getPosts($options): array;
-
-    /**
-     * Returns a source from the current network
-     *
-     * @param int                 $id      An internal identificator of source
-     * @param RequestOptions|null $options An additional options for source
-     *
-     * @return Source
-     */
-    public abstract function getSource(int $id, $options = null): Source {
-        if (is_null($options)) {
-            $options = new RequestOptions();
-        }
-
-        if (!is_a($options, RequestOptions::class, true)) {
-            throw new \InvalidArgumentException('Options must be a '.RequestOptions::class);
-        }
-
-        $options->sourceId = $id;
-
-        return new Source($this, $options);
-    }
 }
