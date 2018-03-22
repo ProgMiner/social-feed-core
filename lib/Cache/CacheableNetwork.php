@@ -22,35 +22,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore;
+namespace SocialFeedCore\Cache;
 
 use SocialFeedCore\Utility\RequestOptions;
 
 /**
- * An interface for all networks that supports caching
+ * An abstract class for all cacheable networks
  *
  * @author ProgMiner
  */
-interface ICachedNetwork extends INetwork {
+abstract class CacheableNetwork implements INetwork {
 
     /**
-     * Synchronizes cache from network
-     *
-     * @param RequestOptions|array $options An additional options
+     * @var NetworkCache Cache
      */
-    public function sync($options);
+    protected $cache;
 
     /**
-     * Returns whether the network is autosynced
-     *
-     * @return bool
+     * @var RequestOptions Options
      */
-    public function isAutoSync(): bool;
+    protected $options;
 
-    /**
-     * Sets the network is autosynced
-     *
-     * @param bool $autoSync
-     */
-    public function setAutoSync(bool $autoSync);
+    public function __construct(NetworkCache $cache, RequestOptions $options) {
+        $this->cache = $cache;
+        $this->options = $options;
+    }
 }
