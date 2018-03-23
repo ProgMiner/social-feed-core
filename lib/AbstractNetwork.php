@@ -22,27 +22,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore\Cache;
-
-use SocialFeedCore\AbstractNetwork;
+namespace SocialFeedCore;
 
 use SocialFeedCore\Utility\RequestOptions;
 
 /**
- * An abstract class for all cacheable networks
+ * An abstract class for all networks
  *
  * @author ProgMiner
  */
-abstract class CacheableNetwork extends AbstractNetwork {
+abstract class AbstractNetwork implements INetwork {
 
     /**
-     * @var NetworkCache Cache
+     * @var RequestOptions Options
      */
-    protected $cache;
+    protected $options;
 
-    public function __construct(RequestOptions $options, NetworkCache $cache) {
-        parent::__construct($options);
-
-        $this->cache = $cache;
+    public function __construct(RequestOptions $options) {
+        $this->options = $options;
     }
 }
