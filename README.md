@@ -15,3 +15,5 @@ A library for loading posts from social networks.
   - *interface* `ICache` - Cache. Several containers with cached posts of networks
   - *class* `NetworkCache` - Abstraction of `ICache` for accessing to one of containers by network classname
   - *class* `CacheableNetwork` - Extension of `AbstractNetwork` for cacheable networks
+- Management
+- Associating
