@@ -24,46 +24,26 @@ SOFTWARE. */
 
 namespace SocialFeedCore\Cache;
 
-use SocialFeedCore\Utility\RequestOptions;
-
 /**
  * An interface for a cached data providers
  *
  * @author ProgMiner
  */
-interface ICache {
+interface IIndexedCache extends ICache {
 
     /**
-     * Removes posts by options and filter solution
+     * Returns list of posts by IDs
      *
-     * Performs $filter($post) for every post.
-     * $filter must returns bool
-     *
-     * @param string         $networkClass INetwork implementations class name
-     * @param RequestOptions $options      Request options
-     * @param callable|null  $filter       Callable filter
-     */
-    public function removePosts(string $networkClass, RequestOptions $options, callable $filter = null);
-
-    /**
-     * Returns filtered list of posts by options
-     *
-     * Performs $filter($post) for every post.
-     * $filter must returns bool
-     *
-     * @param string         $networkClass INetwork implementations class name
-     * @param RequestOptions $options      Request options
-     * @param callable|null  $filter       Callable filter
+     * @param int[] $ids Array of IDs
      *
      * @return Post[]
      */
-    public function getPosts(string $networkClass, RequestOptions $options, callable $filter = null): array;
+    public function getPostsByID(array $ids): array;
 
     /**
-     * Caches (saves in cache) posts
+     * Removes posts by IDs
      *
-     * @param string $networkClass INetwork implementation class name
-     * @param Post[] $posts
+     * @param int[] $ids Array of IDs
      */
-    public function cachePosts(string $networkClass, array $posts);
+    public function removePostsByID(array $ids);
 }
