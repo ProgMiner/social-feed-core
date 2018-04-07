@@ -39,11 +39,11 @@ interface ICache {
      * Performs $filter($post) for every post.
      * $filter must returns bool
      *
-     * @param string         $networkClass INetwork implementations class name
-     * @param RequestOptions $options      Request options
-     * @param callable|null  $filter       Callable filter
+     * @param string         $className {@see IPostProvider} implementation class name
+     * @param RequestOptions $options   Request options
+     * @param callable|null  $filter    Callable filter
      */
-    public function removePosts(string $networkClass, RequestOptions $options, callable $filter = null);
+    public function removePosts(string $className, RequestOptions $options, callable $filter = null);
 
     /**
      * Returns filtered list of posts by options
@@ -51,19 +51,19 @@ interface ICache {
      * Performs $filter($post) for every post.
      * $filter must returns bool
      *
-     * @param string         $networkClass INetwork implementations class name
-     * @param RequestOptions $options      Request options
-     * @param callable|null  $filter       Callable filter
+     * @param string         $className {@see IPostProvider} implementation class name
+     * @param RequestOptions $options   Request options
+     * @param callable|null  $filter    Callable filter
      *
      * @return Post[]
      */
-    public function getPosts(string $networkClass, RequestOptions $options, callable $filter = null): array;
+    public function getPosts(string $className, RequestOptions $options, callable $filter = null): array;
 
     /**
      * Caches (saves in cache) posts
      *
-     * @param string $networkClass INetwork implementation class name
+     * @param string $className {@see IPostProvider} implementation class name
      * @param Post[] $posts
      */
-    public function cachePosts(string $networkClass, array $posts);
+    public function cachePosts(string $className, array $posts);
 }

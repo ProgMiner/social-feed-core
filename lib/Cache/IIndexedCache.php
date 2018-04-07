@@ -25,7 +25,7 @@ SOFTWARE. */
 namespace SocialFeedCore\Cache;
 
 /**
- * An interface for a cached data providers
+ * An interface for a indexed cached data providers
  *
  * @author ProgMiner
  */

@@ -27,18 +27,41 @@ namespace SocialFeedCore;
 use SocialFeedCore\Utility\RequestOptions;
 
 /**
- * An abstract class for all networks
+ * Profile with default options for {@see IPostProvider::getPosts}
  *
  * @author ProgMiner
  */
-abstract class AbstractNetwork implements INetwork {
+class OptionsProfile implements IPostProvider {
 
     /**
-     * @var RequestOptions Options
+     * @var IPostProvider Original post provider
      */
-    protected $options;
+    public $orig;
 
-    public function __construct(RequestOptions $options) {
+    /**
+     * @var RequestOptions Default options
+     */
+    public $options;
+
+    /**
+     * @param IPostProvider $orig
+     * @param RequestOptions $options
+     */
+    public function __construct(IPostProvider $orig, RequestOptions $options) {
+        $this->orig = $orig;
         $this->options = $options;
+    }
+
+    /**
+     * Returns a posts
+     *
+     * @param RequestOptions $options An additional options
+     *
+     * @return Post[] Array of Posts
+     */
+    public function getPosts(RequestOptions $options): array {
+        return $this->orig->getPosts(
+            $this->options->mergeWith($options)
+        );
     }
 }

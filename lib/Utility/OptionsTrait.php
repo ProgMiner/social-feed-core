@@ -25,7 +25,7 @@ SOFTWARE. */
 namespace SocialFeedCore\Utility;
 
 /**
- * An trait for collecting validated data
+ * A trait for collecting validated data
  *
  * @author ProgMiner
  */
@@ -61,8 +61,8 @@ trait OptionsTrait {
     /**
      * Merges data from an object of same class or an array
      *
-     * @param static|array $src       Source
-     * @param callable     $mergeFunc Function for merging
+     * @param static   $src       Source
+     * @param callable $mergeFunc Function for merging
      *
      * @return $this
      *
@@ -75,10 +75,8 @@ trait OptionsTrait {
 
         if (is_a($src, static::class, true)) {
             $src = $src->raw;
-        }
-
-        if (!is_array($src)) {
-            throw new \InvalidArgumentException('Source must be an array or a '.static::class);
+        } else {
+            throw new \InvalidArgumentException('Source must be a '.static::class);
         }
 
         $merged = $mergeFunc($this->raw, $src);

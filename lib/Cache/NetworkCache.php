@@ -28,7 +28,7 @@ use SocialFeedCore\Utility\RequestOptions;
 
 /**
  * A class for provide a cache part
- * by INetwork implementation class name
+ * by {@see IPostProvider} implementation class name
  *
  * @author ProgMiner
  */
@@ -40,16 +40,16 @@ class NetworkCache {
     protected $cache;
 
     /**
-     * @var string INetwork implementation class name
+     * @var string {@see IPostProvider} implementation class name
      */
-    protected $networkClass;
+    protected $className;
 
     /**
-     * @param ICache $cache        Cache
-     * @param string $networkClass INetwork implementation class name
+     * @param ICache $cache     Cache
+     * @param string $className {@see IPostProvider} implementation class name
      */
-    public function __construct(ICache $cache, string $networkClass) {
-        $this->networkClass = $networkClass;
+    public function __construct(ICache $cache, string $className) {
+        $this->className = $className;
         $this->cache = $cache;
     }
 
@@ -65,7 +65,7 @@ class NetworkCache {
      * @return Post[]
      */
     public function getPosts(RequestOptions $options, callable $filter = null) {
-        return $this->cache->getPosts($this->networkClass, $option, $filter);
+        return $this->cache->getPosts($this->className, $option, $filter);
     }
 
     /**
@@ -74,6 +74,6 @@ class NetworkCache {
      * @param Post[] $posts
      */
     public function cachePosts(array $posts) {
-        return $this->cache->cachePosts($this->networkClass, $posts);
+        return $this->cache->cachePosts($this->className, $posts);
     }
 }

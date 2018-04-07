@@ -27,25 +27,18 @@ namespace SocialFeedCore;
 use SocialFeedCore\Utility\RequestOptions;
 
 /**
- * An interface for all (social) networks
+ * Some provider of posts
  *
  * @author ProgMiner
  */
-interface INetwork {
+interface IPostProvider {
 
     /**
-     * Returns the default options
+     * Returns a posts
      *
-     * @return RequestOptions
-     */
-    public function getOptions(): RequestOptions;
-
-    /**
-     * Returns a posts from the network
-     *
-     * @param RequestOptions|array $options An additional options
+     * @param RequestOptions $options
      *
      * @return Post[] Array of Posts
      */
-    public function getPosts($options): array;
+    public function getPosts(RequestOptions $options): array;
 }
