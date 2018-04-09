@@ -32,11 +32,25 @@ namespace SocialFeedCore\Cache;
 interface IIndexedCache extends ICache {
 
     /**
+     * Returns filtered list of posts by options
+     *
+     * Performs $filter($post) for every post.
+     * $filter must returns bool
+     *
+     * @param string         $className {@see IPostProvider} implementation class name
+     * @param RequestOptions $options   Request options
+     * @param callable|null  $filter    Callable filter
+     *
+     * @return IndexedPost[]
+     */
+    public function getPosts(string $className, RequestOptions $options, callable $filter = null): array;
+
+    /**
      * Returns list of posts by IDs
      *
      * @param int[] $ids Array of IDs
      *
-     * @return Post[]
+     * @return IndexedPost[]
      */
     public function getPostsByID(array $ids): array;
 
