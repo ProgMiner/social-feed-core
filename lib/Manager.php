@@ -27,19 +27,42 @@ namespace SocialFeedCore;
 use SocialFeedCore\Utility\RequestOptions;
 
 /**
- * Some provider of posts
+ * Manager of post providers
  *
  * @author ProgMiner
  */
-interface IPostProvider {
+class Manager implements IPostProvider {
 
     /**
-     * Returns an array of Posts.
-     * The order of the Posts is unknown
-     *
-     * @param RequestOptions $options
-     *
-     * @return Post[] Array of Posts
+     * @var IPostProvider[] Post providers
      */
-    public function getPosts(RequestOptions $options): array;
+    public $providers;
+
+    /**
+     * @var RequestOptions Default request options of this manager
+     */
+    public $options;
+
+    /**
+     * @param IPostProvider[] $providers Post providers
+     * @param RequestOptions  $options   Initial request options
+     */
+    public function __construct(array $providers, RequestOptions $options) {
+        $this->providers = $providers;
+        $this->options = $options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPosts(RequestOptions $options): array {
+        $options = $this->options->mergeWith($options);
+
+        $ret = [];
+        foreach ($this->providers as $provider) {
+            $ret = array_merge($ret, $provider->getPosts($options));
+        }
+
+        return $ret;
+    }
 }
