@@ -27,7 +27,7 @@ namespace SocialFeedCore\Cache;
 use SocialFeedCore\Utility\RequestOptions;
 
 /**
- * An interface for a cached data providers
+ * Cache
  *
  * @author ProgMiner
  */

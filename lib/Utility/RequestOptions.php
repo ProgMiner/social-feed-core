@@ -30,7 +30,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
- * A class for collecting post requesting options
+ * Options for requesting posts
  *
  * @author ProgMiner
  */

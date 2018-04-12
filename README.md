@@ -13,5 +13,6 @@ A library for loading posts from social networks.
   - *class* `RequestOptions` - Options for post requesting
 - Cache
   - *interface* `ICache` - Cache
-  - *class* `CachePart` - Part of cache for a `IPostProvider` implementation
+  - *interface* `IIndexedCache` - Cache, where every post have unique ID
+  - *class* `CachePart` - Part of a cache for a `IPostProvider` implementation
 - Associating
