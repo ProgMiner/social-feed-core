@@ -24,25 +24,56 @@ SOFTWARE. */
 
 namespace SocialFeedCore\Cache;
 
-use SocialFeedCore\AbstractNetwork;
-
 use SocialFeedCore\Utility\RequestOptions;
 
 /**
- * An abstract class for all cacheable networks
+ * Part of a {@see ICache} for
+ * {@see IPostProvider} implementation
  *
  * @author ProgMiner
  */
-abstract class CacheableNetwork extends AbstractNetwork {
+class CachePart {
 
     /**
-     * @var NetworkCache Cache
+     * @var ICache Cache
      */
     protected $cache;
 
-    public function __construct(RequestOptions $options, NetworkCache $cache) {
-        parent::__construct($options);
+    /**
+     * @var string {@see IPostProvider} implementation class name
+     */
+    protected $className;
 
+    /**
+     * @param ICache $cache     Cache
+     * @param string $className {@see IPostProvider} implementation class name
+     */
+    public function __construct(ICache $cache, string $className) {
+        $this->className = $className;
         $this->cache = $cache;
+    }
+
+    /**
+     * Returns filtered list of posts by options
+     *
+     * Performs $filter($post) for every post.
+     * $filter must returns bool
+     *
+     * @param RequestOptions $options Request options
+     * @param callable|null  $filter  Callable filter
+     *
+     * @return Post[]
+     */
+    public function getPosts(RequestOptions $options, callable $filter = null) {
+        return $this->cache->getPosts($this->className, $option, $filter);
+    }
+
+    /**
+     * Caches (saves in cache) posts
+     *
+     * @param Post[] $posts
+     */
+    public function cachePosts(array $posts) {
+        return $this->cache->cachePosts($this->className, $posts);
     }
 }
