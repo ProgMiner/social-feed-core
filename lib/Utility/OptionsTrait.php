@@ -104,6 +104,14 @@ trait OptionsTrait {
         return $this;
     }
 
+    /**
+     * Sets raw data equals to validated
+     */
+    public function cleanRaw() {
+        $this->validate();
+        $this->raw = $this->validated;
+    }
+
     public function __isset($key) {
         return isset($this->validated[$key]);
     }

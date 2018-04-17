@@ -24,38 +24,43 @@ SOFTWARE. */
 
 namespace SocialFeedCore\Utility;
 
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
+
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
- * Options for requesting posts
+ * Abstract options powered by {@see ConfigurationInterface}
  *
  * @author ProgMiner
  */
-class RequestOptions extends AbstractConfigurationOptions {
-    use OptionsTrait;
+abstract class AbstractConfigurationOptions implements ConfigurationInterface {
 
-    protected function regenTreeBuilder() {
-        $this->treeBuilder = new TreeBuilder();
-        $rootNode = $this->treeBuilder->root('request_options');
+    /**
+     * @var TreeBuilder
+     */
+    protected $treeBuilder = null;
 
-        $rootNode->
-            children()->
+    /**
+     * @var Processor
+     */
+    protected $processor = null;
 
-                integerNode('sourceId')->
-                    defaultValue(0)->
-                end()->
+    public final function getConfigTreeBuilder() {
+        if (is_null($this->treeBuilder)) {
+            $this->regenTreeBuilder();
+        }
 
-                integerNode('id')->
-                    defaultValue(0)->
-                end()->
+        return $this->treeBuilder;
+    }
 
-                integerNode('count')->
-                    defaultValue(0)->
-                end()->
+    protected abstract function regenTreeBuilder();
 
-                variableNode('meta')->
-                end()->
+    protected final function _validate(array $options): array {
+        if (is_null($this->processor)) {
+            $this->processor = new Processor();
+        }
 
-            end();
+        return $this->processor->processConfiguration($this, [$options]);
     }
 }
