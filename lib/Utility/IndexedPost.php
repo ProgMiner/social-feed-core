@@ -28,31 +28,21 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 /**
- * Post
+ * Indexed post
  *
  * @author ProgMiner
  */
-class Post extends AbstractConfigurationOptions {
+class IndexedPost extends Post {
     use OptionsTrait;
 
     protected function regenTreeBuilder(): NodeDefinition {
-        $this->treeBuilder = new TreeBuilder();
-        $rootNode = $this->treeBuilder->root('post');
+        $rootNode = parent::regenTreeBuilder();
 
         $rootNode->
             children()->
-
-                scalarNode('postProvider')->
-                    defaultValue('')->
-                end()->
-
-                integerNode('id')->
+                integerNode('indexedId')->
                     defaultValue(0)->
                 end()->
-
-                variableNode('meta')->
-                end()->
-
             end();
 
         return $rootNode;

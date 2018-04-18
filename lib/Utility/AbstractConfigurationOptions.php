@@ -28,6 +28,7 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 /**
  * Abstract options powered by {@see ConfigurationInterface}
@@ -54,7 +55,12 @@ abstract class AbstractConfigurationOptions implements ConfigurationInterface {
         return $this->treeBuilder;
     }
 
-    protected abstract function regenTreeBuilder();
+    /**
+     * Regenerates $treeBuilder
+     *
+     * @return NodeDefinition Root node
+     */
+    protected abstract function regenTreeBuilder(): NodeDefinition;
 
     protected final function _validate(array $options): array {
         if (is_null($this->processor)) {
