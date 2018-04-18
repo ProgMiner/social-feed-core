@@ -10,7 +10,10 @@ A library for loading posts from social networks.
   - *class* `Manager` - Manager for a several `IPostProvider` instances
 - Utility
   - *trait* `OptionsTrait` - Utility trait for some options containers
+  - *abstract class* `AbstractConfigurationOptions` - Options powered by `ConfigurationInterface`
   - *class* `RequestOptions` - Options for post requesting
+  - *class* `Post` - Post
+  - *class* `IndexedPost` - Post from `IIndexedCache`
 - Cache
   - *interface* `ICache` - Cache
   - *interface* `IIndexedCache` - Cache, where every post have unique ID

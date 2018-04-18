@@ -28,7 +28,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 /**
- * Indexed post
+ * Post from {@see IIndexedCache}
  *
  * @author ProgMiner
  */
