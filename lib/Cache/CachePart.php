@@ -60,7 +60,7 @@ class CachePart {
      * $filter must returns bool
      *
      * @param RequestOptions $options Request options
-     * @param callable|null  $filter  Callable filter
+     * @param callable       $filter  Callable filter
      *
      * @return Post[]
      */

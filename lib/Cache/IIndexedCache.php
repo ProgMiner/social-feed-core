@@ -41,7 +41,7 @@ interface IIndexedCache extends ICache {
      *
      * @param string         $className {@see IPostProvider} implementation class name
      * @param RequestOptions $options   Request options
-     * @param callable|null  $filter    Callable filter
+     * @param callable       $filter    Callable filter
      *
      * @return IndexedPost[]
      */

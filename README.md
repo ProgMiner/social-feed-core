@@ -19,3 +19,4 @@ A library for loading posts from social networks.
   - *interface* `IIndexedCache` - Cache, where every post have unique ID
   - *class* `CachePart` - Part of a cache for a `IPostProvider` implementation
 - Associating
+- Impl
