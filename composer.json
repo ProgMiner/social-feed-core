@@ -14,12 +14,11 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.0.0",
-        "progminer/php-datagen-lib": "^0.1.0@alpha",
+        "progminer/php-datagen-lib": "^0.2.0@alpha",
         "symfony/config": "^4.0"
     },
     "require-dev": {
-        "pimple/pimple": "~3.0",
-        "progminer/php-datagen": "^0.2.0@alpha"
+        "progminer/php-datagen": "^0.2.2@alpha"
     },
     "autoload": {
         "psr-4": {
