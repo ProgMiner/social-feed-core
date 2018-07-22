@@ -27,7 +27,7 @@ namespace SocialFeedCore\Exception;
 /**
  * API exception
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 class APIException extends \Exception {
 

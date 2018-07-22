@@ -27,7 +27,7 @@ namespace SocialFeedCore\Utility;
 /**
  * A trait for collecting validated data
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 trait OptionsTrait {
 

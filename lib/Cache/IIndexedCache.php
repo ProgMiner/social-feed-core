@@ -29,7 +29,7 @@ namespace SocialFeedCore\Cache;
  *
  * Cache, where every post have unique ID
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 interface IIndexedCache extends ICache {
 

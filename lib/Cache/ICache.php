@@ -29,7 +29,7 @@ use SocialFeedCore\Utility\RequestOptions;
 /**
  * Cache
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 interface ICache {
 

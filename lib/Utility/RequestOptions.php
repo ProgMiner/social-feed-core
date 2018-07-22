@@ -29,7 +29,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 /**
  * Options for requesting posts
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 class RequestOptions extends AbstractConfigurationOptions {
     use OptionsTrait;

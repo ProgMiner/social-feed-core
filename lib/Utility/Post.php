@@ -30,7 +30,7 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 /**
  * Post
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 class Post extends AbstractConfigurationOptions {
     use OptionsTrait;

@@ -30,7 +30,7 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 /**
  * Post from {@see IIndexedCache}
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 class IndexedPost extends Post {
     use OptionsTrait;

@@ -33,7 +33,7 @@ use SocialFeedCore\Impl\Exception\VKException;
 /**
  * VK.com post provider
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 class VKPostProvider implements IPostProvider {
 

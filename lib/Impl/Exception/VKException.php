@@ -29,7 +29,7 @@ use SocialFeedCore\Exception\APIException;
 /**
  * VK API exception
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 class VKException extends APIException {
 

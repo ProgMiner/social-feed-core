@@ -33,7 +33,7 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 /**
  * Abstract options powered by {@see ConfigurationInterface}
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 abstract class AbstractConfigurationOptions implements ConfigurationInterface {
 

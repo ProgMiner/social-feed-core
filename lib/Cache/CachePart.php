@@ -30,7 +30,7 @@ use SocialFeedCore\Utility\RequestOptions;
  * Part of a cache for
  * {@see IPostProvider} implementation
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 class CachePart {
 

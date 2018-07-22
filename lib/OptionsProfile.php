@@ -29,7 +29,7 @@ use SocialFeedCore\Utility\RequestOptions;
 /**
  * Profile with default options for {@see IPostProvider::getPosts}
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 class OptionsProfile implements IPostProvider {
 

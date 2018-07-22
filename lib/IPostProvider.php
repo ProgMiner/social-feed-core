@@ -29,7 +29,7 @@ use SocialFeedCore\Utility\RequestOptions;
 /**
  * Some provider of posts
  *
- * @author ProgMiner
+ * @author Eridan Domoratskiy
  */
 interface IPostProvider {
 
