@@ -22,51 +22,57 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore\Utility;
-
-use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
-
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+namespace SocialFeedCore\Exception;
 
 /**
- * Abstract options powered by {@see ConfigurationInterface}
+ * API exception
  *
  * @author Eridan Domoratskiy
  */
-abstract class AbstractConfigurationOptions implements ConfigurationInterface {
+class API extends \Exception {
 
     /**
-     * @var TreeBuilder
+     * @var mixed Request that caused an error
      */
-    protected $treeBuilder = null;
+    protected $request;
 
     /**
-     * @var Processor
+     * @var \stdClass Response from API
      */
-    protected $processor = null;
+    protected $response;
 
-    public final function getConfigTreeBuilder() {
-        if (is_null($this->treeBuilder)) {
-            $this->regenTreeBuilder();
-        }
-
-        return $this->treeBuilder;
+    /**
+     * @param mixed      $request      Request that caused an error
+     * @param \stdClass  $response     Full response from API with error
+     * @param string     $errorMessage Error message
+     * @param int        $errorCode    Error code
+     * @param \Throwable $previous     Previous exception
+     */
+    public function __construct(
+        $request,
+        \stdClass $response,
+        string $errorMessage,
+        int $errorCode,
+        \Throwable $previous = null
+    ) {
+        parent::__construct($errorMessage, $errorCode, $previous);
     }
 
     /**
-     * Regenerates $treeBuilder
+     * Returns request
      *
-     * @return NodeDefinition Root node
+     * @return mixed Request
      */
-    protected abstract function regenTreeBuilder(): NodeDefinition;
+    public function getRequest() {
+        return $this->request;
+    }
 
-    protected final function _validate(array $options): array {
-        if (is_null($this->processor)) {
-            $this->processor = new Processor();
-        }
-
-        return $this->processor->processConfiguration($this, [$options]);
+    /**
+     * Returns response
+     *
+     * @return \stdClass Response
+     */
+    public function getResponse(): \stdClass {
+        return $this->response;
     }
 }

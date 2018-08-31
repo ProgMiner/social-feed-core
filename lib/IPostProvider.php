@@ -24,10 +24,8 @@ SOFTWARE. */
 
 namespace SocialFeedCore;
 
-use SocialFeedCore\Utility\RequestOptions;
-
 /**
- * Some provider of posts
+ * Post provider
  *
  * @author Eridan Domoratskiy
  */
@@ -35,11 +33,11 @@ interface IPostProvider {
 
     /**
      * Returns an array of Posts.
-     * The order of the Posts is unknown
+     * The order of the Posts is undefined
      *
-     * @param RequestOptions $options
+     * @param Request $request
      *
      * @return Post[] Array of Posts
      */
-    public function getPosts(RequestOptions $options): array;
+    public function getPosts(Request $request): array;
 }

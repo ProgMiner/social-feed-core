@@ -24,14 +24,14 @@ SOFTWARE. */
 
 namespace SocialFeedCore\Impl\Exception;
 
-use SocialFeedCore\Exception\APIException;
+use SocialFeedCore\Exception;
 
 /**
  * VK API exception
  *
  * @author Eridan Domoratskiy
  */
-class VKException extends APIException {
+class VKException extends Exception\API {
 
     /**
      * @param mixed      $request  Request that caused an error

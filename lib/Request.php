@@ -22,57 +22,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore\Exception;
+namespace SocialFeedCore;
 
 /**
- * API exception
+ * Posts request
  *
  * @author Eridan Domoratskiy
  */
-class APIException extends \Exception {
+abstract class Request {
+
+    /** @var int Source ID */
+    public $sourceId;
+
+    /** @var array Fields that requested */
+    public $fields;
+
+    /** @var array Meta data */
+    public $meta;
 
     /**
-     * @var mixed Request that caused an error
+     * @param int   $sourceId Source ID
+     * @param array $params   Array of the following optional params:
+     *                        'fields' => []: Fields that requested
+     *                        'meta'   => []: Meta data
      */
-    protected $request;
-
-    /**
-     * @var \stdClass Response from API
-     */
-    protected $response;
-
-    /**
-     * @param mixed      $request      Request that caused an error
-     * @param \stdClass  $response     Full response from API with error
-     * @param string     $errorMessage Error message
-     * @param int        $errorCode    Error code
-     * @param \Throwable $previous     Previous exception
-     */
-    public function __construct(
-        $request,
-        \stdClass $response,
-        string $errorMessage,
-        int $errorCode,
-        \Throwable $previous = null
-    ) {
-        parent::__construct($errorMessage, $errorCode, $previous);
-    }
-
-    /**
-     * Returns request
-     *
-     * @return mixed Request
-     */
-    public function getRequest() {
-        return $this->request;
-    }
-
-    /**
-     * Returns response
-     *
-     * @return \stdClass Response
-     */
-    public function getResponse(): \stdClass {
-        return $this->response;
+    public function __construct(int $sourceId, array $params = []) {
+        $this->sourceId = $sourceId;
+        $this->fields = (array) $params['fields'] ?? [];
+        $this->meta = (array) $params['meta'] ?? [];
     }
 }

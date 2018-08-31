@@ -22,39 +22,37 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore\Utility;
-
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+namespace SocialFeedCore;
 
 /**
- * Post
+ * Hub of post providers
  *
  * @author Eridan Domoratskiy
  */
-class Post extends AbstractConfigurationOptions {
-    use OptionsTrait;
+class Hub implements IPostProvider {
 
-    protected function regenTreeBuilder(): NodeDefinition {
-        $this->treeBuilder = new TreeBuilder();
-        $rootNode = $this->treeBuilder->root('post');
+    /**
+     * @var IPostProvider[] Post providers
+     */
+    public $providers;
 
-        $rootNode->
-            children()->
+    /**
+     * @param IPostProvider[] $providers Post providers
+     */
+    public function __construct(array $providers) {
+        $this->providers = $providers;
+    }
 
-                scalarNode('postProvider')->
-                    defaultValue('')->
-                end()->
+    /**
+     * {@inheritdoc}
+     */
+    public function getPosts(Request $request): array {
+        $ret = [];
 
-                integerNode('id')->
-                    defaultValue(0)->
-                end()->
+        foreach ($this->providers as $provider) {
+            $ret = array_merge($ret, $provider->getPosts($request));
+        }
 
-                variableNode('meta')->
-                end()->
-
-            end();
-
-        return $rootNode;
+        return $ret;
     }
 }

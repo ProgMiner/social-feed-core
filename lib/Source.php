@@ -22,40 +22,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore\Utility;
-
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+namespace SocialFeedCore;
 
 /**
- * Options for requesting posts
+ * Source of posts
  *
  * @author Eridan Domoratskiy
  */
-class RequestOptions extends AbstractConfigurationOptions {
-    use OptionsTrait;
+class Source {
 
-    protected function regenTreeBuilder() {
-        $this->treeBuilder = new TreeBuilder();
-        $rootNode = $this->treeBuilder->root('request_options');
+    /** @var string Post provider */
+    public $postProvider;
 
-        $rootNode->
-            children()->
+    /** @var int Source ID */
+    public $id;
 
-                integerNode('sourceId')->
-                    defaultValue(0)->
-                end()->
-
-                integerNode('id')->
-                    defaultValue(0)->
-                end()->
-
-                integerNode('count')->
-                    defaultValue(0)->
-                end()->
-
-                variableNode('meta')->
-                end()->
-
-            end();
+    /**
+     * @param string $postProvider Class name of post provider
+     * @param int    $id           Source ID
+     */
+    public function __construct(string $postProvider, int $id) {
+        $this->postProvider = $postProvider;
+        $this->id = $id;
     }
 }

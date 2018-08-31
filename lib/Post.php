@@ -24,45 +24,25 @@ SOFTWARE. */
 
 namespace SocialFeedCore;
 
-use SocialFeedCore\Utility\RequestOptions;
-
 /**
- * Manager of post providers
+ * Post
  *
  * @author Eridan Domoratskiy
  */
-class Manager implements IPostProvider {
+abstract class Post {
+
+    /** @var Source Source from which the post was received */
+    public $source = null;
+
+    /** @var int Post ID at source */
+    public $id = 0;
 
     /**
-     * @var IPostProvider[] Post providers
+     * @param Source $source Post source
+     * @param int    $id     Post ID
      */
-    public $providers;
-
-    /**
-     * @var RequestOptions Default request options of this manager
-     */
-    public $options;
-
-    /**
-     * @param IPostProvider[] $providers Post providers
-     * @param RequestOptions  $options   Initial request options
-     */
-    public function __construct(array $providers, RequestOptions $options) {
-        $this->providers = $providers;
-        $this->options = $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPosts(RequestOptions $options): array {
-        $options = $this->options->mergeWith($options);
-
-        $ret = [];
-        foreach ($this->providers as $provider) {
-            $ret = array_merge($ret, $provider->getPosts($options));
-        }
-
-        return $ret;
+    public function __construct(Source $source, int $id) {
+        $this->source = $source;
+        $this->id = $id;
     }
 }

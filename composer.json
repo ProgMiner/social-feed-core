@@ -13,12 +13,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.0.0",
-        "progminer/php-datagen-lib": "^0.2.0@alpha",
-        "symfony/config": "^4.0"
-    },
-    "require-dev": {
-        "progminer/php-datagen": "^0.2.2@alpha"
+        "php": "^7.0"
     },
     "autoload": {
         "psr-4": {

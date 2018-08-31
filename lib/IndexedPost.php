@@ -22,29 +22,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore\Utility;
-
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+namespace SocialFeedCore;
 
 /**
- * Post from {@see IIndexedCache}
+ * Post from {@see \SocialFeedCore\Cache\IIndexedCache}
  *
  * @author Eridan Domoratskiy
  */
 class IndexedPost extends Post {
-    use OptionsTrait;
 
-    protected function regenTreeBuilder(): NodeDefinition {
-        $rootNode = parent::regenTreeBuilder();
+    /** @var int ID at index */
+    public $indexId;
 
-        $rootNode->
-            children()->
-                integerNode('indexedId')->
-                    defaultValue(0)->
-                end()->
-            end();
+    /**
+     * @param Source $source  Post source
+     * @param int    $id      Post ID
+     * @param int    $indexId Post ID at index
+     */
+    public function __construct(Source $source, int $id, int $indexId) {
+        $this->indexId = $indexId;
 
-        return $rootNode;
+        parent::__construct($source, $id);
     }
 }
