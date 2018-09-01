@@ -28,27 +28,27 @@ use SocialFeedCore\Utility\RequestOptions;
 
 /**
  * Part of a cache for
- * {@see IPostProvider} implementation
+ * {@see PostProvider} implementation
  *
  * @author Eridan Domoratskiy
  */
 class CachePart {
 
     /**
-     * @var ICache Cache
+     * @var Cache Cache
      */
     protected $cache;
 
     /**
-     * @var string {@see IPostProvider} implementation class name
+     * @var string {@see PostProvider} implementation class name
      */
     protected $className;
 
     /**
-     * @param ICache $cache     Cache
-     * @param string $className {@see IPostProvider} implementation class name
+     * @param Cache  $cache     Cache
+     * @param string $className {@see PostProvider} implementation class name
      */
-    public function __construct(ICache $cache, string $className) {
+    public function __construct(Cache $cache, string $className) {
         $this->className = $className;
         $this->cache = $cache;
     }

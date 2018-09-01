@@ -29,15 +29,15 @@ namespace SocialFeedCore;
  *
  * @author Eridan Domoratskiy
  */
-class Hub implements IPostProvider {
+class Hub implements PostProvider {
 
     /**
-     * @var IPostProvider[] Post providers
+     * @var PostProvider[] Post providers
      */
     public $providers;
 
     /**
-     * @param IPostProvider[] $providers Post providers
+     * @param PostProvider[] $providers Post providers
      */
     public function __construct(array $providers) {
         $this->providers = $providers;

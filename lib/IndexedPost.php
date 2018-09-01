@@ -25,7 +25,7 @@ SOFTWARE. */
 namespace SocialFeedCore;
 
 /**
- * Post from {@see \SocialFeedCore\Cache\IIndexedCache}
+ * Post from {@see \SocialFeedCore\Cache\IndexedCache}
  *
  * @author Eridan Domoratskiy
  */

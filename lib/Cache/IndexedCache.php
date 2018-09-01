@@ -22,22 +22,44 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore;
+namespace SocialFeedCore\Cache;
 
 /**
- * Post provider
+ * Indexed cache
+ *
+ * Cache, where every post have unique ID
  *
  * @author Eridan Domoratskiy
  */
-interface IPostProvider {
+interface IndexedCache extends Cache {
 
     /**
-     * Returns an array of Posts.
-     * The order of the Posts is undefined
+     * Returns filtered list of posts by options
      *
-     * @param Request $request
+     * Performs $filter($post) for every post.
+     * $filter must returns bool
      *
-     * @return Post[] Array of Posts
+     * @param string         $className {@see PostProvider} implementation class name
+     * @param RequestOptions $options   Request options
+     * @param callable       $filter    Callable filter
+     *
+     * @return IndexedPost[]
      */
-    public function getPosts(Request $request): array;
+    public function getPosts(string $className, RequestOptions $options, callable $filter = null): array;
+
+    /**
+     * Returns list of posts by IDs
+     *
+     * @param int[] $ids Array of IDs
+     *
+     * @return IndexedPost[]
+     */
+    public function getPostsByID(array $ids): array;
+
+    /**
+     * Removes posts by IDs
+     *
+     * @param int[] $ids Array of IDs
+     */
+    public function removePostsByID(array $ids);
 }

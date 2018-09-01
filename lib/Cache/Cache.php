@@ -31,7 +31,7 @@ use SocialFeedCore\Utility\RequestOptions;
  *
  * @author Eridan Domoratskiy
  */
-interface ICache {
+interface Cache {
 
     /**
      * Removes posts by options and filter solution
@@ -39,7 +39,7 @@ interface ICache {
      * Performs $filter($post) for every post.
      * $filter must returns bool
      *
-     * @param string         $className {@see IPostProvider} implementation class name
+     * @param string         $className {@see PostProvider} implementation class name
      * @param RequestOptions $options   Request options
      * @param callable       $filter    Callable filter
      */
@@ -51,7 +51,7 @@ interface ICache {
      * Performs $filter($post) for every post.
      * $filter must returns bool
      *
-     * @param string         $className {@see IPostProvider} implementation class name
+     * @param string         $className {@see PostProvider} implementation class name
      * @param RequestOptions $options   Request options
      * @param callable       $filter    Callable filter
      *
@@ -62,7 +62,7 @@ interface ICache {
     /**
      * Caches (saves in cache) posts
      *
-     * @param string $className {@see IPostProvider} implementation class name
+     * @param string $className {@see PostProvider} implementation class name
      * @param Post[] $posts
      */
     public function cachePosts(string $className, array $posts);

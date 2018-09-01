@@ -24,7 +24,7 @@ SOFTWARE. */
 
 namespace SocialFeedCore\Impl;
 
-use SocialFeedCore\IPostProvider;
+use SocialFeedCore\PostProvider;
 
 use SocialFeedCore\Utility\RequestOptions;
 
@@ -35,7 +35,7 @@ use SocialFeedCore\Impl\Exception\VKException;
  *
  * @author Eridan Domoratskiy
  */
-class VKPostProvider implements IPostProvider {
+class VKPostProvider implements PostProvider {
 
     /**
      * Requests VK API method
