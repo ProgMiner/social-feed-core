@@ -37,20 +37,20 @@ class API extends \Exception {
     protected $request;
 
     /**
-     * @var \stdClass Response from API
+     * @var mixed Response from API
      */
     protected $response;
 
     /**
      * @param mixed      $request      Request that caused an error
-     * @param \stdClass  $response     Full response from API with error
+     * @param mixed      $response     Full response from API with error
      * @param string     $errorMessage Error message
      * @param int        $errorCode    Error code
      * @param \Throwable $previous     Previous exception
      */
     public function __construct(
         $request,
-        \stdClass $response,
+        $response,
         string $errorMessage,
         int $errorCode,
         \Throwable $previous = null
@@ -70,9 +70,9 @@ class API extends \Exception {
     /**
      * Returns response
      *
-     * @return \stdClass Response
+     * @return mixed Response
      */
-    public function getResponse(): \stdClass {
+    public function getResponse() {
         return $this->response;
     }
 }

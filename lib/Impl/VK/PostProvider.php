@@ -22,20 +22,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore\Impl;
+namespace SocialFeedCore\Impl\VK;
 
-use SocialFeedCore\PostProvider;
-
-use SocialFeedCore\Utility\RequestOptions;
-
-use SocialFeedCore\Impl\Exception\VKException;
+use SocialFeedCore\PostProvider as Base;
+use SocialFeedCore\Request;
 
 /**
  * VK.com post provider
  *
  * @author Eridan Domoratskiy
  */
-class VKPostProvider implements PostProvider {
+class PostProvider implements Base {
 
     /**
      * Requests VK API method
@@ -45,9 +42,8 @@ class VKPostProvider implements PostProvider {
      * @param bool     $checkError If true checks is result contains error 
      *                             and throw exception if contains
      *
-     * @return mixed Response object if $checkError = true, full result object otherwise
-     *
-     * @throws VKException
+     * @return mixed Response object if $checkError = true,
+     *               full result object otherwise
      */
     public static function api(string $method, array $params = [], bool $checkError = true) {
         $request = "https://api.vk.com/method/{$method}?".http_build_query($params);
@@ -57,14 +53,14 @@ class VKPostProvider implements PostProvider {
             return $result;
         }
 
-        VKException::checkError($request, $result);
+        Exception::checkError($request, $result);
         return $result;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPosts(RequestOptions $options): array {
+    public function getPosts(Request $request): array {
         //
     }
 }

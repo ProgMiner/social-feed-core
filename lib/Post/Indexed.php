@@ -22,44 +22,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore\Impl\Exception;
-
-use SocialFeedCore\Exception;
+namespace SocialFeedCore\Post;
 
 /**
- * VK API exception
+ * Cached in indexed cache post
  *
  * @author Eridan Domoratskiy
  */
-class VKException extends Exception\API {
+abstract class Indexed extends Cached {
+
+    /** @var int Post ID at index */
+    public $indexId;
 
     /**
-     * @param mixed      $request  Request that caused an error
-     * @param \stdClass  $response Full response from API with error
-     * @param \Throwable $previous Previous exception
+     * @param PostProvider $source    Post source
+     * @param int          $id        Post ID at source
+     * @param int          $cacheTime Post cache time
+     * @param int          $indexId   Post ID at index
      */
-    public function __construct($request, \stdClass $response, \Throwable $previous = null) {
-        parent::__construct(
-            $request,
-            $response,
-            $response->error->error_msg,
-            $response->error->error_code,
-            $previous
-        );
-    }
+    public function __construct(PostProvider $source, int $id, int $cacheTime, int $indexId) {
+        parent::__construct($source, $id, $cacheTime);
 
-    /**
-     * Checks for an error and throws an exception
-     * if it contains an error
-     *
-     * @param mixed     $request  Request that caused an error
-     * @param \stdClass $response Full response from API with error
-     *
-     * @throws static
-     */
-    public static function checkError($request, \stdClass $response) {
-        if (isset($response->error)) {
-            throw new static($request, $response);
-        }
+        $this->indexId = $indexId;
     }
 }

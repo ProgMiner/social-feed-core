@@ -24,46 +24,45 @@ SOFTWARE. */
 
 namespace SocialFeedCore\Cache;
 
-use SocialFeedCore\Utility\RequestOptions;
+use SocialFeedCore\Cache;
+use SocialFeedCore\Post;
 
 /**
- * Cache
+ * Indexed cache
+ *
+ * Cache, where every post have unique ID.
  *
  * @author Eridan Domoratskiy
  */
-interface Cache {
+interface Indexed extends Cache {
 
     /**
-     * Removes posts by options and filter solution
+     * {@inheritdoc}
      *
-     * Performs $filter($post) for every post.
-     * $filter must returns bool
-     *
-     * @param string         $className {@see PostProvider} implementation class name
-     * @param RequestOptions $options   Request options
-     * @param callable       $filter    Callable filter
+     * @return Post\Indexed[]
      */
-    public function removePosts(string $className, RequestOptions $options, callable $filter = null);
+    public function getPosts(PostProvider $source, Request $request): array;
 
     /**
-     * Returns filtered list of posts by options
+     * {@inheritdoc}
      *
-     * Performs $filter($post) for every post.
-     * $filter must returns bool
-     *
-     * @param string         $className {@see PostProvider} implementation class name
-     * @param RequestOptions $options   Request options
-     * @param callable       $filter    Callable filter
-     *
-     * @return Post[]
+     * @return Post\Indexed[] Cached posts
      */
-    public function getPosts(string $className, RequestOptions $options, callable $filter = null): array;
+    public function cachePosts(PostProvider $source, array $posts): array;
 
     /**
-     * Caches (saves in cache) posts
+     * Returns list of posts by IDs
      *
-     * @param string $className {@see PostProvider} implementation class name
-     * @param Post[] $posts
+     * @param int[] $ids Array of IDs
+     *
+     * @return Post\Indexed[]
      */
-    public function cachePosts(string $className, array $posts);
+    public function getPostsByID(array $ids): array;
+
+    /**
+     * Removes posts by IDs
+     *
+     * @param int[] $ids Array of IDs
+     */
+    public function removePostsByID(array $ids);
 }

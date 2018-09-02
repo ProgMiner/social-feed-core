@@ -22,58 +22,46 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore\Cache;
-
-use SocialFeedCore\Utility\RequestOptions;
+namespace SocialFeedCore;
 
 /**
- * Part of a cache for
- * {@see PostProvider} implementation
+ * Cache
  *
  * @author Eridan Domoratskiy
  */
-class CachePart {
+interface Cache {
 
     /**
-     * @var Cache Cache
-     */
-    protected $cache;
-
-    /**
-     * @var string {@see PostProvider} implementation class name
-     */
-    protected $className;
-
-    /**
-     * @param Cache  $cache     Cache
-     * @param string $className {@see PostProvider} implementation class name
-     */
-    public function __construct(Cache $cache, string $className) {
-        $this->className = $className;
-        $this->cache = $cache;
-    }
-
-    /**
-     * Returns filtered list of posts by options
+     * Returns list of posts by request
      *
-     * Performs $filter($post) for every post.
-     * $filter must returns bool
+     * @param PostProvider $source  Posts source
+     * @param Request      $request Request
      *
-     * @param RequestOptions $options Request options
-     * @param callable       $filter  Callable filter
-     *
-     * @return Post[]
+     * @return Post\Cached[]
      */
-    public function getPosts(RequestOptions $options, callable $filter = null) {
-        return $this->cache->getPosts($this->className, $option, $filter);
-    }
+    public function getPosts(PostProvider $source, Request $request): array;
 
     /**
      * Caches (saves in cache) posts
      *
-     * @param Post[] $posts
+     * If post is already cached it is updated in cache.
+     *
+     * @param PostProvider $source Posts source
+     * @param Post[]       $posts
+     *
+     * @return Post\Cached[] Cached posts
      */
-    public function cachePosts(array $posts) {
-        return $this->cache->cachePosts($this->className, $posts);
-    }
+    public function cachePosts(PostProvider $source, array $posts);
+
+    /**
+     * Removes posts by request and filter solution
+     *
+     * Performs $filter($post) for every post.
+     * $filter must returns bool.
+     *
+     * @param PostProvider  $source  Posts source
+     * @param Request       $request Request
+     * @param callable|null $filter  Callable filter
+     */
+    public function removePosts(PostProvider $source, Request $request, ?callable $filter = null);
 }

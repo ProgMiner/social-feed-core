@@ -31,9 +31,6 @@ namespace SocialFeedCore;
  */
 abstract class Request {
 
-    /** @var int Source ID */
-    public $sourceId;
-
     /** @var array Fields that requested */
     public $fields;
 
@@ -41,13 +38,11 @@ abstract class Request {
     public $meta;
 
     /**
-     * @param int   $sourceId Source ID
      * @param array $params   Array of the following optional params:
      *                        'fields' => []: Fields that requested
      *                        'meta'   => []: Meta data
      */
-    public function __construct(int $sourceId, array $params = []) {
-        $this->sourceId = $sourceId;
+    public function __construct(array $params = []) {
         $this->fields = (array) $params['fields'] ?? [];
         $this->meta = (array) $params['meta'] ?? [];
     }

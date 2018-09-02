@@ -22,44 +22,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore\Cache;
+namespace SocialFeedCore\Post;
+
+use SocialFeedCore\Post;
 
 /**
- * Indexed cache
- *
- * Cache, where every post have unique ID
+ * Cached post
  *
  * @author Eridan Domoratskiy
  */
-interface IndexedCache extends Cache {
+abstract class Cached extends Post {
+
+    /** @var int Last post update in cache time */
+    public $cacheTime;
 
     /**
-     * Returns filtered list of posts by options
-     *
-     * Performs $filter($post) for every post.
-     * $filter must returns bool
-     *
-     * @param string         $className {@see PostProvider} implementation class name
-     * @param RequestOptions $options   Request options
-     * @param callable       $filter    Callable filter
-     *
-     * @return IndexedPost[]
+     * @param PostProvider $source    Post source
+     * @param int          $id        Post ID at source
+     * @param int          $cacheTime Post cache time
      */
-    public function getPosts(string $className, RequestOptions $options, callable $filter = null): array;
+    public function __construct(PostProvider $source, int $id, int $cacheTime) {
+        parent::__construct($source, $id);
 
-    /**
-     * Returns list of posts by IDs
-     *
-     * @param int[] $ids Array of IDs
-     *
-     * @return IndexedPost[]
-     */
-    public function getPostsByID(array $ids): array;
-
-    /**
-     * Removes posts by IDs
-     *
-     * @param int[] $ids Array of IDs
-     */
-    public function removePostsByID(array $ids);
+        $this->cacheTime = $cacheTime;
+    }
 }

@@ -22,26 +22,42 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-namespace SocialFeedCore;
+namespace SocialFeedCore\Impl\VK;
+
+use SocialFeedCore\Exception as Base;
 
 /**
- * Post from {@see \SocialFeedCore\Cache\IndexedCache}
+ * VK API exception
  *
  * @author Eridan Domoratskiy
  */
-class IndexedPost extends Post {
-
-    /** @var int ID at index */
-    public $indexId;
+class Exception extends Base\API {
 
     /**
-     * @param Source $source  Post source
-     * @param int    $id      Post ID
-     * @param int    $indexId Post ID at index
+     * @param mixed      $request  Request that caused an error
+     * @param mixed      $response Full response from API with error
+     * @param \Throwable $previous Previous exception
      */
-    public function __construct(Source $source, int $id, int $indexId) {
-        $this->indexId = $indexId;
+    public function __construct($request, $response, \Throwable $previous = null) {
+        parent::__construct(
+            $request,
+            $response,
+            $response->error->error_msg,
+            $response->error->error_code,
+            $previous
+        );
+    }
 
-        parent::__construct($source, $id);
+    /**
+     * Checks for an error and throws an exception
+     * if it contains an error
+     *
+     * @param mixed $request  Request that caused an error
+     * @param mixed $response Full response from API with error
+     */
+    public static function checkError($request, $response) {
+        if (isset($response->error)) {
+            throw new static($request, $response);
+        }
     }
 }

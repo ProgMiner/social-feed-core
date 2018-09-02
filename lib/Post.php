@@ -31,17 +31,17 @@ namespace SocialFeedCore;
  */
 abstract class Post {
 
-    /** @var Source Source from which the post was received */
-    public $source = null;
+    /** @var PostProvider Post source */
+    public $source;
 
     /** @var int Post ID at source */
-    public $id = 0;
+    public $id;
 
     /**
-     * @param Source $source Post source
-     * @param int    $id     Post ID
+     * @param PostProvider $source Post source
+     * @param int          $id     Post ID
      */
-    public function __construct(Source $source, int $id) {
+    public function __construct(PostProvider $source, int $id) {
         $this->source = $source;
         $this->id = $id;
     }
