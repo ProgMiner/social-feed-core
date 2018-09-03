@@ -25,28 +25,20 @@ SOFTWARE. */
 namespace SocialFeedCore;
 
 /**
- * Post
+ * Author of post
  *
- * @author Eridan Domoratskiy
+ * @author ProgMiner
  */
-abstract class Post {
+class Author {
 
-    /** @var PostProvider Post source */
-    public $source;
+    /** @var string Author name */
+    public $name;
 
-    /** @var int Post ID at source */
-    public $id;
+    /** @var null|string Author avatar URL */
+    public $avatar;
 
-    /** @var Author Post author */
-    public $author;
-
-    /**
-     * @param PostProvider $source Post source
-     * @param int          $id     Post ID
-     */
-    public function __construct(PostProvider $source, int $id, Author $author) {
-        $this->source = $source;
-        $this->id = $id;
-        $this->author = $author;
+    public function __construct(string $name, ?string $avatar = null) {
+        $this->name = $name;
+        $this->avatar = $avatar;
     }
 }
