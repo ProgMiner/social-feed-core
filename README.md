@@ -4,15 +4,19 @@ A library for loading posts from social networks.
 
 ## Architecture
 
-- Core
-  - *interface* `IPostProvider` - Post provider
-  - *class* `Hub` - Hub of post providers
-  - *class* `Request` - Posts request
-  - *class* `Post` - Post
-  - *class* `IndexedPost` - Post from `IIndexedCache`
-- Cache
-  - *interface* `ICache` - Cache
-  - *interface* `IIndexedCache` - Cache, where every post have unique ID
-  - *class* `CachePart` - Part of a cache for a `IPostProvider` implementation
-- Associating
+- *class* `Author` - Post author
+- *interface* `Cache` - Cache
+  - *interface* `Indexed` - Cache, where every post have unique ID
+- *class* `CachePart` - Part of a cache, associated with one source
+- Exception
+  - *class* `API` - API exception
+- *class* `Hub` - Hub of post providers
 - Impl
+  - VK
+    - *class* `PostProvider` - VK.com post provider
+    - *class* `Exception` - VK.com API exception
+- *abstract class* `Post` - Post
+  - *abstract class* `Cached` - Cached post
+  - *abstract class* `Indexed` - Cached and indexed post
+- *interface* `PostProvider` - Post provider
+- *abstract class* `Request` - Posts request
